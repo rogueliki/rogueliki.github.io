@@ -1,0 +1,10 @@
+URI: index; vary="language,charset"
+
+URI: index.html
+Content-Type: text/html; charset=UTF-8
+Content-Language: en
+
+URI: index.ja.html
+Content-Type: text/html; charset=UTF-8
+Content-Language: ja
+

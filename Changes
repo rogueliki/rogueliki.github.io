@@ -1,0 +1,52 @@
+=== v0.2.2 20070930
+* Implemented `wield' and `unwield'
+* Added Item.Sword
+* Implemented `fight', `kick', `damaged' and `die'
+* Implemented `attack', `attacked', `slash' and `slashed'
+* Use simple argorithm for battle
+* Changed argorithm and interface to calculate FoV
+* Implemented Event.selectScreen
+* Added AI.attacker and AI.counterattacker
+* Implemented to show the grave posthumously
+* Added WikiAPI.Cookie
+* Implemented player-and-map inputing interface of rogueliki.html
+
+----
+=== v0.2.1 20070801
+* Added WikiAPI.AIR.Files
+* Added Rogueliki.AI
+* Added rl.perform
+* Implemented rl.turn requests performing all players of rl.map
+* Added player.other flag for messaging
+* Added self-player to rl.map
+* Added status element to HTML for drawing player's status
+* Added the simple code enables FoV is viewable
+* Added Item.Armor
+* Added Item.Armor.TShirt
+* Implemented `equip' and `wear'
+* Implemented `unequip' and `takeOff'
+* Added some items to map:FirstFloor for test of existing features
+
+----
+== v0.2.0 20070707
+* Start trying to write english description
+* Added the hash feature to html files
+* Changed default map into map:FirstFloor, default player into player:Guest
+* Added Tile.Floor.Toilet
+* Added Tile.Door.Locked
+* Fixed rl.translate for the plural handling
+* Upgraded attached TiddlyWiki to 2.2
+* Renamed WikiRPC to WikiAPI
+* Added WikiAPI.Creole
+* Use lang information when get wiki in WikiAPI.Rogueliki.HTML
+* Use the delegation when use other wiki api in WikiAPI.Rogueliki.HTML
+* Implemented rl.simplify
+* Implemented toLiteral (Base, Map, Player)
+* Implemented rl.save
+* Implemented Event.selectItems
+* Implemented dropSeveral
+* Added getObject and puObject to wiki.php
+* Added getObject and puObject to WikiAPI.XMLRPC
+* Added Tile.Floor.Staircase, Up and Down
+* Implemented goUp and goDown
+* Added rl.register

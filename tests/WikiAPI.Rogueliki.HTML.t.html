@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.Simple');
+plan({tests: 3});
+JSAN.errorLevel = 'warn';
+JSAN.use('WikiAPI.Rogueliki.HTML');
+
+var wiki = new WikiAPI.Rogueliki.HTML('../wiki/');
+wiki._assignNamespace('aho.aho.aho', 2);
+
+ok(eval('aho.aho.aho == 2'), 'assign namespace success');
+ok(wiki.getPage('FrontPage') == 'This Page is FrontPage.', 'getPage returns correct strings');
+ok(wiki.getPage('てｓｔ'), 'UTF-8 getPage is successful: ' +  wiki.getPage('てｓｔ'));
+</script></pre>
+</body>
+</html>

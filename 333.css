@@ -1,0 +1,86 @@
+body {
+  margin : 1em;
+  padding: 1em;
+  color: #ccc;
+  background-color: #333;
+  font-family: 'Courier New', Monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: .1em;
+  padding:.1em;
+}
+
+h1 {
+  font-size: 180%;
+}
+h2 {
+  font-size: 150%;
+}
+h3, h4, h5, h6 {
+  font-size: 120%;
+}
+
+p {
+  margin : .1em;
+  padding: .1em;
+}
+
+img#logo {
+  border: none;
+  vertical-align: middle;
+}
+
+div#error {
+  color: #f33;
+  display: none;
+}
+
+div#base {
+  line-height: 1.0;
+  white-space: nowrap;
+}
+
+div#base .lines {
+  line-height: 1.2;
+  background-color: #333;
+  position: absolute;
+  top: auto;
+  left: auto;
+}
+
+div#base .system {
+  line-height: 1.2;
+  background-color: #333;
+  position: absolute;
+  top: auto;
+  left: auto;
+}
+
+a:link {
+  color: #fff;
+}
+a:visited {  
+  color: #999;
+}
+
+table {
+  text-align: left;
+}
+
+ul, ol {
+  margin: .1em 1em;
+  padding: .1em 1em;
+}
+
+hr {
+  background-color: #ccc;
+  border: none;
+  height: 1px;
+}
+
+form {
+  margin : .1em;
+  padding: .1em;
+}
+

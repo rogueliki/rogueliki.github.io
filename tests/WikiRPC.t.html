@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+
+<form id="fm" name="fm">
+  <textarea name="ta1" id="ta" cols="40" rows="30">
+|むにむに|
+
+*しね
+**asda
++swerser
++rser
+-TesttTtset
++rserser
+***asdad
+-sghdf
+|ぼぼt|t<>est|
+|RsEr|[[resr]]
+|[[|]]|
+|tsだｓｄt|tset|
+
+つぇつ[[ぇｔ]]|tsetse|tset
+びう
+|ぜーんsets|tset|
+
+|あほ|</textarea>
+  <textarea name="ta2" id="ta" cols="80" rows="30">
+  </textarea>
+  <input type="button" onclick="document.fm.ta2.value = wiki.convertPageHTML(document.fm.ta1.value)" value="eval" />
+</form>
+
+<script type="text/javascript" src="../lib/WikiRPC/Rogueliki/HTML.js"></script>
+<script type="text/javascript">var wiki = new WikiRPC.Rogueliki.HTML();</script></pre>
+
+</body>
+</html>

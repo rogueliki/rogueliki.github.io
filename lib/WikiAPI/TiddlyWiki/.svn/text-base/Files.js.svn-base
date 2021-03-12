@@ -1,0 +1,110 @@
+if (typeof ActiveXObject != 'undefined' && typeof XMLHttpRequest == 'undefined') {
+  XMLHttpRequest = function () { return new ActiveXObject('Microsoft.XMLHTTP'); };
+}
+
+if (typeof WikiRPC == 'undefined') { var WikiRPC = {}; }
+if (typeof WikiRPC.TiddlyWiki == 'undefined') { WikiRPC.TiddlyWiki = {}; }
+if (typeof WikiRPC.TiddlyWiki.Files == 'undefined') {
+  WikiRPC.TiddlyWiki.Files = function (wiki, dir) {
+    this.wiki = wiki || 'empty.html';
+    this._importFromWiki('loadFile', 'saveFile', 'getLocalPath', 'convertUnicodeToUTF8', 'convertUTF8ToUnicode');
+    var location = document.location.toString();
+    this.dir = location.substring(0, location.lastIndexOf('/') + 1)
+      + (dir || this.wiki.substring(0, this.wiki.lastIndexOf('/') + 1) + 'wiki/');
+  };
+}
+
+try {
+  JSAN.use('Object.Source'); // Object.Source
+} catch (e) {
+  throw 'WikiRPC.TiddlyWiki.Files requires JSAN to be loaded\n' + e;
+}
+
+WikiRPC.TiddlyWiki.Files.VERSION = '0.0.1';
+
+// prototype
+WikiRPC.TiddlyWiki.Files.prototype._assignNamespace = function (name, object, force) {
+  var parent = function () { return this; }();
+  name.split('.').forEach(function (value, key, array) {
+    parent = parent[value] == null
+      ? array.length - 1 == key // object undefined
+        ? parent[value] = object
+        : parent[value] = {}
+      : array.length - 1 == key // object defined
+        ? parent[value] = force
+          ? object
+          : parent[value]
+        : parent[value];
+  });
+  return parent;
+};
+
+WikiRPC.TiddlyWiki.Files.prototype._importFromWiki = function () {
+  var req = new XMLHttpRequest;
+  req.open('GET', this.wiki, false);
+  req.send(null);
+  /*
+  if (req.status == 200 || req.status == 304 || req.status == 0 || req.status == null) {
+    return req.responseText;
+  }
+   */
+  eval(req.responseText.match(/<\/title>\n<script type="text\/javascript">((.*\n)*)<\/script>/m)[1]);
+  for (var i = 0; i < arguments.length; ++i) {
+    var name = arguments[i];
+    this[name] = eval(name);
+  }
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.getAllPages = function () {
+  return this.getPage('RecentChanges').replace(/^.*?\[\[(.*)\]\]$/gm, '$1').slice(0, -1).split('\n');
+};
+
+WikiRPC.TiddlyWiki.Files.prototype._getPath = function (wiki_name) {
+  return this.getLocalPath(this.dir + wiki_name.replace(/(.*:)?(.*)/, function (match, space, name) {
+    return (space ? encodeURIComponent(space.slice(0, -1)) + '/' : '') + encodeURIComponent(name);
+  }));
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.getPage = function (page_name) {
+  try {
+    return this.convertUTF8ToUnicode(this.loadFile(this._getPath(page_name) + '.txt'));
+  } catch (e) {
+    return '';
+  }
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.getPageHTML = function (page_name) {
+  return this.getPage(page_name);
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.getObject = function (object_name, padding) {
+  this._assignNamespace(padding, function (obj) { return obj; }, false);
+  try {
+    return eval(this.convertUTF8ToUnicode(this.loadFile(this._getPath(object_name) + '.js')));
+  } catch (e) {
+    throw  'GetObjectError: ' + object_name + '\n' + e;
+  }
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.putPage = function (page_name, content) {
+  var changes = new Date().formatString('YYYY-0MM-0DD 0hh:0mm:0ss ')
+    + '[[' + page_name + ']]\n'
+    + this.getPage('RecentChanges').replace(new RegExp('^.*?\\[\\[' + page_name + '\\]\\]\n', 'gm'), '');
+
+  return page_name != 'RecentChanges'
+    && this.saveFile(
+      this._getPath('RecentChanges') + '.txt',
+      this.convertUnicodeToUTF8(changes)
+    ) && this.saveFile(
+      this._getPath(page_name) + '.txt',
+      this.convertUnicodeToUTF8(content)
+    );
+};
+
+WikiRPC.TiddlyWiki.Files.prototype.putObject = function (object_name, object, padding) {
+  var json = this.convertUnicodeToUTF8(Object.Source(object));
+  if (padding) {
+    json = padding + '(\n' + json + '\n);\n';
+  }
+  return this.saveFile(this._getPath(object_name) + '.js', json);
+};

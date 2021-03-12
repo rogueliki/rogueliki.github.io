@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>object.html - (Untitled)</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+  <script type="text/javascript" src="hash.js"></script>
+  <script type="text/javascript" src="lib/JSAN.js"></script>
+  <style type="text/css"> div#body { margin: .4em; } </style>
+</head>
+
+<body>
+<div id="error"></div>
+
+<form id="menu" name="menu" onsubmit="wiki_open(this.object_id.value);return false" method="get" action="">
+  <input id="object_id" name="object_id" type="text" size="20" value="(Untitled)"
+    onclick="if (this.value == '(Untitled)') { this.value = ''; } this.onclick = Function()" />
+  <input id="open" name="open" type="button" value="Open" onclick="wiki_open(this.parentNode.object_id.value)" />
+  <input id="reload" name="reload" type="button" value="Reload" onclick="wiki_reload()" />
+  <input id="save" name="save" type="button" value="Save" onclick="wiki_save()" />
+  <input id="permalink" name="permalink" type="button" value="Wiki 2 Permalink" onclick="object2hash()" />
+  <!-- <input id="load_link" name="load_link" type="button" value="Permalink 2 Wiki" onclick="hash2object()" /> -->
+</form>
+
+<hr />
+
+<p id="path"></p>
+<div id="body">
+<noscript>
+  <p>This page requires a JavaScript-enabled browser.</p>
+</noscript>
+</div>
+<hr />
+
+<form id="edit_form" name="edit_form" method="get" action="#">
+  <input id="edit" name="edit" type="button" onclick="new_edit()" value="New Edit (Untitled)" />
+  <input id="add" name="add" type="button" onclick="add_to_edit()" value="Add (Untitled)" />
+  <input id="clear" name="clear" type="button" onclick="form_clear()" value="Clear" />
+  <!--  <input name="alert_or_not" id="alert_or_not" type="checkbox" />
+  <label for="alert_or_not">alert</label> -->
+  <input id="test" name="test" type="button" onclick="test_content()" value="Test" />
+  <input id="set" name="set" type="button" onclick="set_input()" value="Set to (Untitled)" disabled="disabled" /> <br />
+  <textarea name="content" id="content" cols="80" rows="15" onchange="content_changed()" onkeypress="content_changed()"></textarea> <br />
+</form>
+
+<script type="text/javascript">
+var object = { key: 'sample value' }, object_id = '', object_path = '', wiki, tested_data;
+try {
+  JSAN.includePath = ['lib'];
+  JSAN.errorLevel = 'die';
+  JSAN.use('Array.Iterative'); // for (Array, Object).map
+  JSAN.use('String.Escape'); // String.escape
+  JSAN.use('Object.Source'); // toSource
+  JSAN.use('WikiAPI.Rogueliki.HTML');
+  wiki = new WikiAPI.Rogueliki.HTML('./wiki/');
+  wiki.setlocale(Locale.LC_MESSAGES, 'en'); // set WikiAPI.Rogueliki.HTML locale
+} catch (e) {
+  error('Load Error:\n' + (e.description || e).toString());
+}
+
+function hash2object() {
+  var rpc_and_name = hash2wiki(object_id);
+  if (rpc_and_name[0]) {
+    wiki.wikis.unshift(rpc_and_name[0]);
+  }
+  if (rpc_and_name[1]) {
+    wiki_open(rpc_and_name[1]);
+  }
+}
+
+function object2hash() {
+  wiki2hash(object_id);
+}
+
+function error(str) {
+  var ele = document.getElementById("error");
+  ele.style.display = 'block';
+  ele.innerHTML = '<p>' + str.replace(/\n/g, '<br />') + '</p><p>'
+    + '<a href="javascript:document.getElementById(\'error\').style.display=\'none\';void(0);">'
+    + 'Close Error Message</a></p><hr />';
+}
+
+function draw(path) {
+  path = path || '';
+  update_form(path);
+  document.edit_form.edit.disabled = '';
+
+  // draw path link
+  document.getElementById('path').innerHTML = function (path, first) {
+    var obj = eval('object' + path);
+    return (path ? arguments.callee(path.substring(0, path.lastIndexOf('[')), false) + ' ' : '')
+      + (first ? '<strong>' : '<a href="javascript:draw(\'' + path.escape('\'') + '\')">')
+      + (path ? path.substring(path.lastIndexOf('[')) : (object_id ? object_id.escapeHTML() : '(Untitled)'))
+      + (first ? '</strong>' : '</a>') + ':'+ (obj instanceof Array ? 'array' : typeof obj);
+  }(path, true);
+
+  // draw data source
+  document.getElementById('body').innerHTML = function (obj, path) {
+    var html = '', self = arguments.callee;
+    if (typeof obj == 'boolean' || obj instanceof Boolean
+        || typeof obj == 'string' || obj instanceof String
+        || typeof obj == 'number' || obj instanceof Number
+        || typeof obj == 'function' || obj instanceof Function) {
+      return Object.toLiteral(obj).escapeHTML();
+    } else if (obj instanceof Array) {
+      //Array.forEach(obj, function (value, key) {
+      return '<table border="1">\n'
+        + (obj.every(function (value, key, array) {
+          return value instanceof Array && array[0].length && value.length == array[0].length;
+        })
+          ? Array.map(obj, function (value, key) { // 2D array
+            return (key == 0
+              ? '<tr><td></td>' + value.map(function (value, key) {
+                return '<td>[' + key + ']</td>';
+              }).join('') + '</tr>\n'
+              : '')
+              + '<tr>\n'
+              + '<td><a href="javascript:draw(\'' + path.escape('\'') + '[' + key + ']\')">[' + key + ']</a>'
+              + ':'+ (value instanceof Array ? 'array' : typeof value) + '</td>\n'
+              + value.map(function (value) {
+                return '<td>(' + String(value).escapeHTML() + ')</td>\n';
+                //return '<td>' + self(value, path + '[' + key + ']')  + '</td>\n';
+              }).join('')
+              + '</tr>\n';
+          })
+          : Array.map(obj, function (value, key) { // normal array
+            return '<tr>\n'
+              + '<td><a href="javascript:draw(\'' + path.escape('\'') + '[' + key + ']\')">[' + key + ']</a>'
+              + ':'+ (value instanceof Array ? 'array' : typeof value) + '</td>\n'
+              + '<td>('+ String(value).escapeHTML() + ')</td>\n'
+              //+ '<td>'+ self(value, path + '[' + key + ']') + '</td>\n'
+              + '</tr>\n';
+          })).join('')
+        + '</talbe>\n';
+    } else if (obj instanceof Object) {
+      return '<table border="1">\n'
+        + Object.map(obj, function (value, key) {
+          if (key.match(/^_/)) {
+            return;
+          }
+          return '<tr>\n'
+            + (obj.hasOwnProperty(key) ? '<th>' : '<td>')
+            + '<a href="javascript:draw(\'' + (path + '[\'' + key.escape('\'').escapeSpecial() + '\']').escape('\'') + '\')">[\'' + key.escape('\'').escapeSpecial() + '\']</a>'
+            + ':'+ (value instanceof Array ? 'array' : typeof value)
+            + (obj.hasOwnProperty(key) ? '</th>\n' : '</td>\n')
+            + '<td>(' + String(value).escapeHTML() + ')</td>\n'
+            //+ '<td>' + self(value, path +  '[\'' + key.escape('\'') + '\']') + '</td>\n'
+            + '</tr>\n';
+        }).join('')
+        + '</table>\n';
+    }
+    return '';
+  }(eval('object' + path), path);
+}
+
+function wiki_open(id) {
+  object_id = id || window.prompt('Enter a Object ID.');
+  if (!object_id) { return; }
+  try {
+    object = wiki.getObject(object_id, 'Rogueliki.onLoad');
+  } catch (e) {
+    return error('Cannot Get Object "' + object_id + '":\n' + Object.toLiteral(e));
+  }
+  object_path = '';
+  document.menu.object_id.value = object_id;
+  document.title = 'object.html - ' + object_id;
+  draw();
+}
+
+function wiki_reload() {
+  if (!object_id) { return; }
+  try {
+    object = wiki.getObject(object_id, 'Rogueliki.onLoad');
+  } catch (e) {
+    return error('Cannot Get Object "' + object_id + '":\n' + Object.toLiteral(e));
+  }
+  object_path = '';
+  draw();
+}
+
+function wiki_save() {
+  try {
+    alert(wiki.putObject(object_id, object, 'Rogueliki.onLoad') ? 'Save is done' : 'Save failed');
+  } catch (e) {
+    return error('Cannot Put Object "' + object_id + '":\n' + Object.toSource(e));
+  }
+}
+
+function new_edit(obj) {
+  obj = obj || eval('object' + object_path);
+  document.edit_form.content.value = Object.toLiteral(obj);
+  document.edit_form.edit.disabled = 'disabled';
+}
+
+function add_to_edit(obj) {
+  obj = obj || eval('object' + object_path);
+  document.edit_form.content.value += '\n' + Object.toLiteral(obj);
+}
+
+function update_form(path) {
+  var object_name = object_id + (object_path = path);
+  document.edit_form.edit.value = 'New Edit ' + object_name;
+  document.edit_form.add.value = 'Add ' + object_name;
+  document.edit_form.set.value = 'Set to ' + object_name;
+}
+
+function test_content() {
+  var input;
+  try {
+    input = eval('(' + document.edit_form.content.value + ')');
+  } catch (e) {
+    return error('Test Content Failed:\n' + e);
+  }
+  //if (document.edit_form.alert_or_not.checked) { alert(input); }
+  tested_data = input;
+  document.edit_form.set.disabled = '';
+}
+
+function content_changed() {
+  tested_data = null;
+  document.edit_form.edit.disabled = '';
+  document.edit_form.set.disabled = 'disabled';
+}
+
+function form_clear() {
+  document.edit_form.content.value = '';
+  content_changed();
+}
+
+function set_input() {
+  eval('object' + object_path + ' = ' + Object.toLiteral(tested_data));
+  draw(object_path);
+}
+
+</script>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+<script type="text/javascript">
+hash2object()
+draw();
+new_edit(object);
+</script>
+</body>
+
+</html>

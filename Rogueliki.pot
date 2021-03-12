@@ -1,0 +1,527 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-09-08 07:12+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Rogueliki.js:564
+msgid "AI must call rl.turn and pass time."
+msgstr ""
+
+#: lib/Rogueliki/Event.js:25 lib/Rogueliki/Event.js:51
+#: lib/Rogueliki/Event.js:70 lib/Rogueliki/Event.js:136
+#: lib/Rogueliki/Event.js:145 lib/Rogueliki/Event.js:159
+msgid "Never mind."
+msgstr ""
+
+#: lib/Rogueliki/Item.js:58
+#, c-format
+msgid "%s equips %s."
+msgstr ""
+
+#: lib/Rogueliki/Item.js:59
+#, c-format
+msgid "You equip %s."
+msgstr ""
+
+#: lib/Rogueliki/Item.js:98
+#, c-format
+msgid "%s%s"
+msgstr ""
+
+#: lib/Rogueliki/Item.js:98
+msgid " (being equipped)"
+msgstr ""
+
+#: lib/Rogueliki/Item.js:120
+#, c-format
+msgid "%s unequips %s."
+msgstr ""
+
+#: lib/Rogueliki/Item.js:121
+#, c-format
+msgid "You unequip %s."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:176 lib/Rogueliki/Map.js:214 lib/Rogueliki/Map.js:253
+#: lib/Rogueliki/Player.js:282 lib/Rogueliki/Player.js:371
+msgid "In what direction?"
+msgstr ""
+
+#: lib/Rogueliki/Map.js:178
+msgid "You see no objects to close there."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:187
+#, c-format
+msgid "You drop %s."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:208
+#, c-format
+msgid "You see here %s."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:208
+#, c-format
+msgid "You see %s."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:216
+msgid "You see no objects to open there."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:228
+msgid "There is nothing here to pick up."
+msgstr ""
+
+#: lib/Rogueliki/Map.js:231
+msgid "What dou you want to pick up?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:116 lib/Rogueliki/Player.js:176
+#: lib/Rogueliki/Player.js:187 lib/Rogueliki/Player.js:312
+#: lib/Rogueliki/Player.js:333 lib/Rogueliki/Player.js:384
+#: lib/Rogueliki/Player.js:459 lib/Rogueliki/Player.js:470
+msgid "You don't have anything."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:118
+msgid "What do you want to apply?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:131
+#, c-format
+msgid "%s attacks %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:132
+#, c-format
+msgid "You attack %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:136 lib/Rogueliki/Player.js:304
+#, c-format
+msgid "%s misses."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:137 lib/Rogueliki/Player.js:305
+#, c-format
+msgid "You miss %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:145
+#, c-format
+msgid "%s is in the way."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:163
+#, c-format
+msgid "%s died."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:164
+msgid "You died."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:171
+msgid "You cannot drop something you are wearing."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:178 lib/Rogueliki/Player.js:189
+msgid "What do you want to drop?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:224
+msgid "You have not chosen any items to equip."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:226 lib/Rogueliki/Player.js:452
+msgid "You have equipped this item already."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:228 lib/Rogueliki/Player.js:232
+#, c-format
+msgid "You cannot equip %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:230
+#, c-format
+msgid "You cannot equip %s over %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:264
+msgid "You don't have any way to fight."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:268
+msgid "What method do you fight by?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:290
+msgid "That is a silly thing to kick."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:299
+#, c-format
+msgid "%s kicks %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:300
+#, c-format
+msgid "You kick %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:321
+msgid "the player"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:321
+msgid "you"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:335
+msgid "What do you want to read?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:339
+msgid "That is a silly thing to read."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:352
+#, c-format
+msgid "\"%s\" %s said."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:353
+#, c-format
+msgid "\"%s\" You said."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:379
+msgid "That is a silly thing to slash."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:386
+msgid "What do you want to take off?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:389
+msgid "That is a silly thing to take off."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:426
+msgid "You have not chosen any items to unequip."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:428
+msgid "You have not equipped this item."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:430 lib/Rogueliki/Player.js:434
+#, c-format
+msgid "You cannot unequip %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:432
+#, c-format
+msgid "You must unequip %s first."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:446 lib/Rogueliki/Player.js:464
+msgid "bare hands"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:449
+#, c-format
+msgid "You cannot unwield %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:450
+msgid "You are already empty handed."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:455
+msgid "You cannot wield items any more."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:457
+#, c-format
+msgid "You cannot wield %s."
+msgstr ""
+
+#: lib/Rogueliki/Player.js:461
+msgid "What do you want to wield?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:472
+msgid "What do you want to wear?"
+msgstr ""
+
+#: lib/Rogueliki/Player.js:475
+msgid "That is a silly thing to wear."
+msgstr ""
+
+#: lib/Rogueliki/System.js:36
+msgid "Command: "
+msgstr ""
+
+#: lib/Rogueliki/System.js:59
+msgid "Please select all wiki objects you want to save."
+msgstr ""
+
+#: lib/Rogueliki/System.js:63
+#, c-format
+msgid "`%s' saved."
+msgstr ""
+
+#: lib/Rogueliki/System.js:64
+#, c-format
+msgid "Saving `%s' is failed."
+msgstr ""
+
+#: lib/Rogueliki/Tile.js:50
+msgid "You move funny."
+msgstr ""
+
+#: lib/Rogueliki/Item/Armor.js:5
+msgid "a armor"
+msgstr ""
+
+#: lib/Rogueliki/Item/Armor.js:6
+msgid "body"
+msgstr ""
+
+#: lib/Rogueliki/Item/Book.js:5
+msgid "a book of blank paper"
+msgstr ""
+
+#: lib/Rogueliki/Item/Book.js:6
+msgid "This book is blank."
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:5
+msgid "a clipboard"
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:12
+msgid "What do you want clip?"
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:15
+msgid "That is a silly thing to clip."
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:21
+#, c-format
+msgid "You clip %s."
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:26 lib/Rogueliki/Item/PencilCase.js:12
+msgid "What do you want edit?"
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:29 lib/Rogueliki/Item/PencilCase.js:15
+msgid "That is a silly thing to edit."
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:32 lib/Rogueliki/Item/Clipboard.js:42
+#: lib/Rogueliki/Item/Clipboard.js:53
+msgid "This board doesn't clip anythig."
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:37
+msgid "What do you want read?"
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:47 lib/Rogueliki/Item/Pen.js:12
+msgid "What do you want write on?"
+msgstr ""
+
+#: lib/Rogueliki/Item/Clipboard.js:50 lib/Rogueliki/Item/Pen.js:15
+msgid "That is a silly thing to write on."
+msgstr ""
+
+#: lib/Rogueliki/Item/Pen.js:5
+msgid "a pen"
+msgstr ""
+
+#: lib/Rogueliki/Item/PencilCase.js:5
+msgid "a pencil case"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:5 lib/Rogueliki/Item/Scroll/Wiki.js:6
+msgid "a scroll of blank paper"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:9 lib/Rogueliki/Item/Scroll/Wiki.js:12
+msgid "You are editing."
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:15 lib/Rogueliki/Item/Scroll.js:36
+#: lib/Rogueliki/Item/Scroll/Wiki.js:21 lib/Rogueliki/Item/Scroll/Wiki.js:42
+#, c-format
+msgid "You write on %s."
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:16 lib/Rogueliki/Item/Scroll.js:37
+msgid "a scroll"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:22
+msgid "This is blank."
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:24
+#, c-format
+msgid "You read: \"%s\"."
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:25
+msgid "You read:"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll.js:30 lib/Rogueliki/Item/Scroll/Wiki.js:33
+msgid "You are writing."
+msgstr ""
+
+#: lib/Rogueliki/Item/Sword.js:5
+msgid "a sword"
+msgstr ""
+
+#: lib/Rogueliki/Item/Sword.js:8
+msgid "slash"
+msgstr ""
+
+#: lib/Rogueliki/Item/Armor/TShirt.js:4
+msgid "a t-shirt"
+msgstr ""
+
+#: lib/Rogueliki/Item/Armor/TShirt.js:5
+msgid "upper body"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll/Wiki.js:6
+#, c-format
+msgid "a scroll labeled %s"
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll/Wiki.js:22
+#, c-format
+msgid "You cannot edit %s."
+msgstr ""
+
+#: lib/Rogueliki/Item/Scroll/Wiki.js:43
+#, c-format
+msgid "You cannot write on %s."
+msgstr ""
+
+#: lib/Rogueliki/Player/Human.js:5
+msgid "the human"
+msgstr ""
+
+#: lib/Rogueliki/Player/Human.js:7
+msgid "kick"
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:6
+msgid "Please input a locale string."
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:11
+#, c-format
+msgid "Locale is set to %s."
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:20
+msgid "Debug mode started."
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:21
+msgid "Debug mode stopped."
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:25
+msgid "Default key input is disabled."
+msgstr ""
+
+#: lib/Rogueliki/System/HTML.js:26
+msgid "Default key input is enabled."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:8
+msgid "The door is closed."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:11
+msgid "A door cannot be entered diagonally."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:17
+msgid "The door is already closed."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:25
+msgid "The door closes."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:27 lib/Rogueliki/Tile/Door.js:47
+msgid "This door is broken."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:42
+msgid "The door opens."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door.js:45
+msgid "The door is already open."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Wall.js:6
+msgid "There is a wall blocking your way."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Door/Locked.js:7
+msgid "This door is locked."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase.js:5
+msgid "a staircase"
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Toilet.js:5
+msgid "a toilet"
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase/Down.js:5
+msgid "a staircase down"
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase/Down.js:9
+msgid "You go down stairs."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase/Down.js:13
+#: lib/Rogueliki/Tile/Floor/Staircase/Up.js:13
+msgid "This staircase seems to crumble any minute."
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase/Up.js:5
+msgid "a staircase up"
+msgstr ""
+
+#: lib/Rogueliki/Tile/Floor/Staircase/Up.js:9
+msgid "You go up stairs."
+msgstr ""

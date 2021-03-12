@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+  JSAN.errorLevel = 'die';
+  JSAN.addRepository('../lib');
+
+  JSAN.use('Test.Harness.Browser');
+  document.write('Test.Harness.Browser.VERSION = ' + Test.Harness.Browser.VERSION);
+
+  var test = new Test.Harness.Browser();
+  if (typeof test.encoding == 'function') {
+    test.encoding('UTF-8');
+  }
+  test.runTests(
+    'prototype.t.html'
+  );
+</script>
+</body>
+</html>

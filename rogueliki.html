@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>rogueliki.html</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+  <script type="text/javascript" src="hash.js"></script>
+  <script type="text/javascript" src="lib/JSAN.js"></script>
+</head>
+
+<body>
+<div id="error"></div>
+<form id="menu" name="menu" method="get" action="">
+  <input id="permalink" name="permalink" type="button" value="Wiki 2 Permalink" onclick="rl2hash()" />
+</form>
+
+<hr />
+
+<script type="text/javascript">
+document.write('<div id="base"><p id="loading">Now Loading Rogueliki.HTML...</p></div>');
+var map_id = 'map:FirstFloor', player_id = 'player:Guest';
+
+window.setTimeout(function () {
+  JSAN.includePath = ['lib'];
+  JSAN.errorLevel = 'warn';
+  try {
+    JSAN.use('Object.Source');
+    JSAN.use('String.Escape');
+    JSAN.use('Rogueliki.HTML');
+    rl = new Rogueliki.HTML('base', './wiki/');
+    hash2rl();
+    document.getElementById('loading').innerHTML += ' v' + get_version() + ' Done.';
+    document.getElementById('base').innerHTML += '<p id="starting"><input id="to_start" type="button" onclick="window.start()" value="start" />'
+      + '<br />player:<input id="player_id" size="12" value="' + player_id.replace('player:', '') + '" />'
+      + '<br />map:<input id="map_id" size="12" value="' + map_id.replace('map:', '') + '" /></p>';
+    document.getElementById('to_start').focus();
+  } catch (e) {
+    alert(Object.toLiteral(e));
+    document.getElementById('base').innerHTML += '<p>' + (e.description || e).toString().replace(/\n/g, '<br />') + '</p>';
+  }
+}, 1);
+
+function start(m_id, p_id) {
+  map_id = m_id || 'map:' + document.getElementById('map_id').value;
+  player_id = p_id || 'player:' + document.getElementById('player_id').value;
+  document.getElementById('starting').innerHTML = 'Now Starting Rogueliki with ' + player_id + ' & ' + map_id + '...';
+  window.setTimeout(function () {
+    try {
+      wiki_open(map_id, player_id);
+      rl.start();
+    } catch (e) {
+      alert(Object.toLiteral(e));
+      document.getElementById('base').innerHTML += '<p>' + (e.description || e).toString().replace(/\n/g, '<br />') + '</p>';
+    }
+  }, 1);
+}
+
+function get_version() {
+  try {
+    var req = new XMLHttpRequest;
+    req.open('GET', 'VERSION', false);
+    req.send(null);
+    return req.responseText;
+  } catch (e) {
+    return '?.?.?';
+  }
+}
+
+function wiki_open(m_id, p_id) {
+  try {
+    rl.map = m_id ? rl.load(map_id = m_id) : rl.map;
+    rl.player = p_id ? rl.load(player_id = p_id) : rl.player;
+    if (m_id || p_id) {
+      document.title = 'rogueliki.html (' + player_id.escapeHTML() + ') - ' + map_id.escapeHTML();
+    }
+  } catch (e) {
+    alert(Object.toLiteral(e));
+  }
+}
+
+function hash2rl() {
+  var rpc_and_param = hash2wiki(map_id, player_id);
+  if (rpc_and_param[0]) {
+    wiki.wikis.unshift(rpc_and_param[0]);
+  }
+  map_id = rpc_and_param[1] || map_id;
+  player_id = rpc_and_param[2] || player_id;
+}
+
+function rl2hash() {
+  wiki2hash(rl.map.id || rl.map.type, rl.player.id || rl.player.type);
+}
+
+</script>
+<noscript>
+  <p>Rogueliki.HTML requires a JavaScript-enabled browser.</p>
+</noscript>
+
+<hr />
+
+<form id="fm" name="fm">
+  <textarea name="ta" id="ta" cols="60" rows="10"></textarea>
+  <input name="cb" id="cb" type="checkbox" checked="checked" />
+  <label for="cb">alert</label>
+  <input type="button" onclick="document.fm.cb.checked ? alert(eval(document.fm.ta.value)) : eval(document.fm.ta.value)" value="eval" />
+</form>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.Simple');
+JSAN.use('String.Escape');
+plan({tests: 4});
+
+ok('<>&&"'.escapeHTML() == '&lt;&gt;&amp;&amp;&quot;', 'escapeHTML :' + '<>&&"'.escapeHTML());
+ok('test"test\\"'.escape('"') == 'test\\"test\\\\\\"', 'escape(\'"\') :' + 'test"test\\"'.escape('"'));
+ok('&lt;&gt;&amp;&amp;&quot;'.unescapeHTML() == '<>&&"', 'unescapeHTML: ' + '&lt;&gt;&amp;&amp;&quot;'.unescapeHTML());
+ok('&#12390;&#65363;&#65364;&#12391;&#12377;'.unescapeHTML() == 'てｓｔです',
+   'unescapeHTML: ' + '&#12390;&#65363;&#65364;&#12391;&#12377;'.unescapeHTML());
+</script></pre>
+</body>
+</html>

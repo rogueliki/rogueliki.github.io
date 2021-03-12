@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>text2map</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+</head>
+
+<body>
+
+<form id="fm" name="fm">
+  <textarea name="text" id="text" cols="80" rows="20" wrap="off"></textarea>
+  <input type="button" onclick="convert()" value="convert" /><br />
+  <textarea name="map" id="map" cols="80" rows="20" wrap="off"></textarea>
+  X: <input type="text" id="X" name="X" value="0" size="3" />
+  Y: <input type="text" id="Y" name="Y" value="0" size="3" />
+  <input type="button" onclick="forming()" value="form" /><br />
+</form>
+
+<script type="text/javascript">
+
+function convert() {
+  var map = document.fm.text.value;
+  var lines = map.split(/\r?\n/);
+  var X = 0, Y = 0;
+  for (var i = 0; i < lines.length; ++i) {
+    var chrs = lines[i].split("");
+    if (X < chrs.length) { X = chrs.length; }
+    for (var j = 0; j < chrs.length; ++j) {
+      chrs[j] = chrs[j] == '"' ? '"\\""' :  '"' + chrs[j] + '"';
+    }
+    lines[i] = '  [' + chrs.join(',') + ']';
+  }
+  Y = lines.length;
+  
+  document.fm.X.value = X;
+  document.fm.Y.value = Y;
+  document.fm.map.value = '  [\n  ' + lines.join(',\n  ') + '\n  ]';
+}
+
+function forming() {
+  var map = document.fm.text.value;
+  var lines = map.split(/\r?\n/);
+  var text = '';
+  var X = parseInt(document.fm.X.value, 10), Y = parseInt(document.fm.Y.value, 10);
+
+  lines.length = Y;
+  for (var i = 0; i < lines.length; ++i) {
+    var chrs = lines[i] ? lines[i].split("") : [];
+    chrs.length = X
+    for (var j = 0; j < chrs.length; ++j) {
+      chrs[j] = chrs[j] ? (chrs[j] == '"' ? '"\\""' :  '"' + chrs[j] + '"') : '';
+    }
+    lines[i] = '  [' + chrs.join(',') + ']';
+  }
+
+  document.fm.map.value = '  [\n  ' + lines.join(',\n  ') + '\n  ]';
+}
+
+</script>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>

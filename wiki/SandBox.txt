@@ -1,0 +1,3 @@
+[[link|tset]][[MyBigPage|**Go/to// page]][[http://www.wikicreole.org/]]
+http://www.rawlink.org/, http://www.another.rawlink.org
+[[http://www.wikicreole.org/|Visit the WikiCreole website]] [[Weird Stuff|**Weird** //Stuff//]] [[Ohana:WikiFamily]]

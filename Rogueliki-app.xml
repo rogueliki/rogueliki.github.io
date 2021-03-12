@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://ns.adobe.com/air/application/1.0.M4"
+    appId="com.rogueliki.Rogueliki" version="0.2.2">
+    <name>Rogueliki</name>
+    <title>Rogueliki - Roguelike Wiki Engine</title>
+    <rootContent systemChrome="standard" visible="true">rogueliki.html</rootContent>
+    <installFolder>Rogueliki</installFolder>
+</application>

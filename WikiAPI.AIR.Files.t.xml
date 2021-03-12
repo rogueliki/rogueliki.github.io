@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://ns.adobe.com/air/application/1.0.M4"
+    appId="com.rogueliki.Rogueliki.tests.WikiAPI.AIR.Files" version="0.0.1">
+    <name>Test WikiAPI.AIR.Files</name>
+    <rootContent systemChrome="standard" visible="true">tests/WikiAPI.AIR.Files.t.html</rootContent>
+</application>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<div id="base"></div>
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.Simple');
+JSAN.errorLevel = 'warn';
+JSAN.use('Rogueliki.HTML');
+JSAN.use('WikiAPI.TiddlyWiki.Files');
+plan({tests: 3});
+
+var rl = new Rogueliki.HTML('base', '../wiki/');
+rl.wiki.wikis = [new WikiAPI.TiddlyWiki.Files('../TiddlyWiki.htm', '../wiki/')];
+
+ok(rl, 'instace succeed');
+var map = rl.load('Rogueliki.Map');
+var id = rl.register(map);
+map.time = String(new Date);
+
+ok(rl.save(map), 'map save');
+
+var map2 = rl.load(id);
+ok(map.toLiteral(true) == map2.toLiteral(true), 'map load');
+
+map = rl.load('Rogueliki.Map');
+rl.register(map, id);
+var tile = rl.load('Rogueliki.Tile.Floor');
+rl.register(tile);
+map.tiles[0][0] = tile;
+
+ok(rl.save(map), 'map save 2');
+
+ok(rl.load(map.id).toLiteral(true) == map.toLiteral(true), 'map load 2');
+ok(rl.load(tile.id).toLiteral(true) == tile.toLiteral(true), 'tile load');
+</script></pre>
+</body>
+</html>

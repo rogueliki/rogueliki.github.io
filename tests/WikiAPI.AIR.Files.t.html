@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/WikiAPI/AIR/Files.js"></script>
+</head>
+
+<body>
+
+<pre id="test"><script type="text/javascript">
+function ok (test, mes) {
+  document.write((test ? 'OK' : 'NG' ) + ' - ' + mes + '<br />')
+}
+var wiki = new WikiAPI.AIR.Files(window.runtime.flash.filesystem.File.documentsDirectory.url);
+
+var date = String(new Date);
+ok(wiki.putPage('SandBox', date), 'putPage is successful: ' + date);
+ok(wiki.getPage('SandBox') == date, 'getPage returns correct strings: ' + wiki.getPage('SandBox'));
+/*
+var Rogueliki = {}; Rogueliki.onLoad = function (a) { return a; };
+
+ok(wiki.putObject('SandBox', {date: date}, 'Rogueliki.onLoad'), 'putObject is successful');
+ok(wiki.getObject('SandBox', 'Rogueliki.onLoad').date == date, 'getObject returns correct object');
+*/
+
+ok(typeof wiki.getPage('てｓｔ') == 'string', 'UTF-8 getPage is successful: ' + wiki.getPage('てｓｔ'));
+ok(wiki.putPage('てｓｔ', '<これはてｓｔです>'), 'UTF-8 putPage is successful');
+ok(wiki.getPage('てｓｔ') == '<これはてｓｔです>', 'UTF-8 getPage returns correct strings: ' + wiki.getPage('てｓｔ'));
+
+var list;
+ok((list = wiki.getAllPages()) instanceof Array, 'getAllPages: ' + list.join(', '));
+</script>
+</pre>
+</body>
+</html>

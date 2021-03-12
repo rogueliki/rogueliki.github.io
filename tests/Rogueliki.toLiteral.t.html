@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<div id="base"></div>
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.Simple');
+JSAN.errorLevel = 'warn';
+JSAN.use('Rogueliki.HTML');
+
+plan({tests: 12});
+
+var rl = new Rogueliki.HTML('base', '../wiki/');
+ok(rl, 'instace succeed');
+var player = rl.load('player:test');
+rl.command(player, 'test');
+
+ok(Object.toLiteral(player) == '"player:test"', 'player:test Object.toLiteral(player) == "player:test": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+player._realLiteral = true;
+ok(Object.toLiteral(player) != '"player:test"', 'player:test Object.toLiteral(player) != "player:test": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+player.items.b._realLiteral = true;
+ok(Object.toLiteral(player.items.b) != '"item:test"', 'player:test items[b] Object.toLiteral(player) != "item:test": ' + Object.toLiteral(player.items.b).replace(/\r?\n/g, ''));
+
+player = rl.load('Rogueliki.Player');
+rl.command(player, 'test');
+
+ok(Object.toLiteral(player) == '"Rogueliki.Player"', '"Rogueliki.Player" Object.toLiteral(player) == "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+player._realLiteral = true;
+ok(Object.toLiteral(player) == '"Rogueliki.Player"', '"Rogueliki.Player" Object.toLiteral(player) == "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+
+player = rl.load({type:'Rogueliki.Player',items:{a:'?'}});
+rl.command(player, 'test');
+
+ok(Object.toLiteral(player) != '"Rogueliki.Player"', '{type:\'Rogueliki.Player\',items:{a:\'?\'}} Object.toLiteral(player) != "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+player._realLiteral = true;
+ok(Object.toLiteral(player) != '"Rogueliki.Player"', '{type:\'Rogueliki.Player\',items:{a:\'?\'}} Object.toLiteral(player) != "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+
+player = rl.load({type:'Rogueliki.Player',items:{}});
+rl.command(player, 'test');
+
+ok(Object.toLiteral(player) == '"Rogueliki.Player"', '{type:\'Rogueliki.Player\',items:{}} Object.toLiteral(player) == "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+player._realLiteral = true;
+ok(Object.toLiteral(player) == '"Rogueliki.Player"', '{type:\'Rogueliki.Player\',items:{}} Object.toLiteral(player) == "Rogueliki.Player": ' + Object.toLiteral(player).replace(/\r?\n/g, ''));
+
+var map = rl.load('map:test');
+rl.command(map, 'start');
+ok(Object.toLiteral(map) == '"map:test"', 'map:test Object.toLiteral(map) ==  "map:test"');
+map._realLiteral = true;
+ok(Object.toLiteral(map) != '"map:test"', 'map:test Object.toLiteral(map): ' + Object.toLiteral(map));
+</script></pre>
+</body>
+</html>

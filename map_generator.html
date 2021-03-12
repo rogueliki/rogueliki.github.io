@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD xHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>Map Genarator</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+</head>
+
+<body>
+
+<form id="generator" name="generator">
+  <label for="map_width">width:</label> <input type="text" id="map_width" name="map_width" value="75" size="3" />
+  <label for="map_height">height:</label> <input type="text" id="map_height" name="map_height" value="18" size="3" /><br />
+  <label for="straightness">straightness:</label> <input type="text" id="straightness" name="straightness" value="75" size="3" />
+  <label for="sparseness">sparseness:</label> <input type="text" id="sparseness" name="sparseness" value="90" size="3" />
+  <label for="add_loops">add loops:</label> <input type="text" id="add_loops" name="add_loops" value="50" size="3" /><br />
+  <label for="room_count">room count:</label> <input type="text" id="room_count" name="room_count" value="7" size="3" />
+  <label for="room_width_min">width: between</label> <input type="text" id="room_width_min" name="room_width_min" value="5" size="2" />
+  <label for="room_width_max">and</label> <input type="text" id="room_width_max" name="room_width_max" value="12" size="2" />
+  <label for="room_height_min">height: between</label> <input type="text" id="room_height_min" name="room_height_min" value="4" size="2" />
+  <label for="room_height_max">and</label> <input type="text" id="room_height_max" name="room_height_max" value="8" size="2" />
+  <input type="button" onclick="generate()" value="generate" />
+  <br />
+  <textarea name="text_map" id="text_map" cols="80" rows="20" wrap="off"></textarea><br />
+  <input type="button" onclick="convert()" value="convert" />
+  <input type="button" onclick="forming()" value="form" />
+  <label for="form_width">width:</label> <input type="text" id="form_width" name="form_width" value="0" size="3" />
+  <label for="form_height">height:</label> <input type="text" id="form_height" name="form_height" value="0" size="3" />
+  <br />
+  <textarea name="array_map" id="array_map" cols="80" rows="20" wrap="off"></textarea>
+</form>
+
+<script type="text/javascript">
+function generate() {
+  var width = parseInt(document.generator.map_width.value, 10), height = parseInt(document.generator.map_height.value, 10);
+  var straightness = parseInt(document.generator.straightness.value, 10) / 100;
+  var sparseness = parseInt(document.generator.sparseness.value, 10) / 100;
+  var add_loops = parseInt(document.generator.add_loops.value, 10) / 100;
+  var room_count = parseInt(document.generator.room_count.value, 10),
+  room_width_min = parseInt(document.generator.room_width_min.value, 10),
+  room_width_max = parseInt(document.generator.room_width_max.value, 10),
+  room_height_min = parseInt(document.generator.room_height_min.value, 10),
+  room_height_max = parseInt(document.generator.room_height_max.value, 10);
+
+  // init map
+  var map = [];
+  map.length = height;
+  for (var i = 0; i < map.length; ++i) {
+    var line = (map[i] = []);
+    line.length = width;
+    for (var j = 0; j < line.length; ++j) {
+      line[j] = ' '; // all wall
+    }
+  }
+
+  maze(map, width, height, straightness, sparseness, add_loops);
+  put_rooms(map, width, height, room_count,
+            [room_width_min, room_width_max],
+            [room_height_min, room_height_max]);
+  document.generator.text_map.value = map2text(map);
+}
+
+function put_rooms(map, width, height, room_count, x_range, y_range) {
+  var x_min = x_range[0], x_max = x_range[1], y_min = y_range[0], y_max = y_range[1],
+  x, y, x2, y2, rooms = [], room;
+  for (var i = 0; i < room_count; ++i) {
+    make_room(map, width, height,
+              x_min + Math.floor(Math.random() * (x_max - x_min + 1)),
+              y_min + Math.floor(Math.random() * (y_max - y_min + 1)),
+              rooms
+              );
+  }
+}
+
+function make_room(map, width, height, room_w, room_h, rooms) {
+  var x, y, x2, y2, best = width * height * 1000, temp, room, overlap;
+  for (var i = 0; i <= height - room_h; ++i) {
+    for (var j = 0; j <= width - room_w; ++j) {
+      overlap = false;
+      for (var k = 0; k < rooms.length; ++k) {
+        room = rooms[k];
+        // if overlap to room before
+        if (room[0] - room_w < j && j <= room[2] && room[1] - room_h < i && i <= room[3]) {
+          overlap = true;
+          break;
+        }
+      }
+      temp = overlap ? best : search_weight(map, width, height, j, i, j + room_w - 1, i + room_h - 1);
+      if (temp && temp < best) {
+        best = temp;
+        x = j; y = i;
+        x2 = j + room_w - 1; y2 = i + room_h - 1;
+      }
+    }
+  }
+
+  // if cannot place room
+  if (best == width * height * 100) {
+    return;
+  }
+
+  // draw simple room
+  var line;
+  for (i = y; i <= y2; ++i) {
+    line = map[i];
+    for (j = x; j <= x2; ++j) {
+      line[j] = (i == y || i == y2)
+        ? '-'
+        : j == x || j == x2
+          ? '|'
+          : '.';
+    }
+  }
+
+  draw_door(map, width, height, x, y, x2, y2);
+
+  rooms.push([x, y, x2, y2]);
+}
+
+function draw_door(map, width, height, x, y, x2, y2) {
+  var line, before, l_before, r_before;
+  for (var i = y; i <= y2; ++i) {
+    line = map[i];
+    // adjacent to a corridor (left & right)
+    if (!l_before && x != 0 && (line[x - 1] == '#' || line[x - 1] == '+')) {
+      line[x] = '+';
+      l_before = true;
+    } else {
+      l_before = false;
+    }
+    if (!r_before && x2 != width - 1 && (line[x2 + 1] == '#' || line[x2 + 1] == '+')) {
+      line[x2] = '+';
+      r_before = true;
+    } else {
+      r_before = false;
+    }
+  }
+
+  // adjacent to a corridor (up & down)
+  if (y != 0) {
+    line = map[y - 1];
+    for (var j = x; j <= x2; ++j) {
+      if (!before && (line[j] == '#' || line[j] == '+')) {
+        map[y][j] = '+';
+        before = true;
+      } else {
+        before = false;
+      }
+    }
+  }
+  if (y2 != height - 1) {
+    line = map[y2 + 1];
+    for (j = x; j <= x2; ++j) {
+      if (!before && (line[j] == '#' || line[j] == '+')) {
+        map[y2][j] = '+';
+        before = true;
+      } else {
+        before = false;
+      }
+    }
+  }
+}
+
+function search_weight(map, width, height, x, y, x2, y2) {
+  var line, overlap = 0, corridor = 0;
+  for (var i = y; i <= y2; ++i) {
+    line = map[i];
+    // adjacent to a corridor (left & right)
+    if (i != y && i != y2) {
+      corridor += (x != 0 && line[x - 1] == '#' ? 1 : x != 0 && line[x - 1] == '+' ? 100 : 0)
+        + (x2 != width - 1 && line[x2 + 1] == '#' ? 1 : x2 != width - 1 && line[x2 + 1] == '+' ? 100 : 0);
+    } else {
+      corridor += (x != 0 && line[x - 1] == '#' ? 200 : x != 0 && line[x - 1] == '+' ? 400 : 0)
+        + (x2 != width - 1 && line[x2 + 1] == '#' ? 200 : x2 != width - 1 && line[x2 + 1] == '+' ? 400 : 0);
+    }
+
+    // overlap
+    for (var j = x; j <= x2; ++j) {
+      switch (line[j]) {
+      case '#': overlap += 3; break;
+      case '.': overlap += 100; break;
+      case '|': overlap += 100; break;
+      case '-': overlap += 100; break;
+      case '+': overlap += 100; break;
+      default: break;
+      }
+    }
+  }
+
+  // adjacent to a corridor (up & down)
+  if (y != 0) {
+    line = map[y - 1];
+    for (j = x; j <= x2; ++j) {
+      corridor += j != x && j != x2
+        ? line[j] == '#' ? 1 : line[j] == '+' ? 100 : 0
+        : line[j] == '#' ? 200 : line[j] == '+' ? 400 : 0;
+    }
+  }
+  if (y2 != height - 1) {
+    line = map[y2 + 1];
+    for (j = x; j <= x2; ++j) {
+      corridor += j != x && j != x2
+        ? line[j] == '#' ? 1 : line[j] == '+' ? 100 : 0
+        : line[j] == '#' ? 200 : line[j] == '+' ? 400 : 0;
+    }
+  }
+  return corridor ? overlap + corridor : 0;
+}
+
+function maze(map, width, height, straightness, sparseness, add_loops) {
+  /*
+    weight map
+
+     256    2     4
+     128    1     8
+     64     32    16
+  */
+  var wei = [];
+  wei.length = height;
+  for (var i = 0; i < wei.length; ++i) {
+    var line = (wei[i] = []);
+    line.length = width;
+    for (var j = 0; j < line.length; ++j) {
+      line[j] = 0; // all 0
+    }
+  }
+
+  var corridor_list = [], dead_end_list = [];
+
+  // put first corridor
+  var x = Math.floor(Math.random() * width), y =  Math.floor(Math.random() * height);
+  map[y][x] = '#';
+  update_weight(x, y, wei, width, height);
+  corridor_list.push([x, y]);
+  var way, key = 0;
+
+  // make pure maze
+  while (corridor_list.length > 0) {
+    key = Math.floor(Math.random() * corridor_list.length);
+    x = corridor_list[key][0]; y = corridor_list[key][1];
+    while ((way = check_next(x, y, wei, width, height)).length != 0) {
+      straight = search_straight(x, y, wei);
+      switch (way.next & straight && straightness > Math.random() && straight
+              || way[Math.floor(Math.random() * way.length)]) {
+      case 1: --y; break;
+      case 2: ++x; break;
+      case 4: ++y; break;
+      case 8: --x; break;
+      }
+      map[y][x] = '#';
+      update_weight(x, y, wei, width, height);
+      key = corridor_list.length;
+      corridor_list.push([x, y]);
+    }
+
+    if (search_straight(x, y, wei)) {
+      dead_end_list.push([x, y]);
+      //map[y][x] = 'X';
+    }
+    corridor_list.splice(key, 1);
+  }
+
+  // make sparse
+  var sparse_count = dead_end_list.length - parseInt(dead_end_list.length * sparseness, 10);
+  while (dead_end_list.length > sparse_count) {
+    key = Math.floor(Math.random() * dead_end_list.length);
+    x = dead_end_list[key][0]; y = dead_end_list[key][1];
+    dead_end_list.splice(key, 1);
+    map[y][x] = ' ';
+    update_weight(x, y, wei, width, height, true);
+    switch (wei[y][x] & (2 + 8 + 32 + 128)) {
+    case 2: --y; break;
+    case 8: ++x; break;
+    case 32: ++y; break;
+    case 128: --x; break;
+    }
+
+    if (search_straight(x, y, wei)) {
+      dead_end_list.push([x, y]);
+      //map[y][x] = 'X';
+    }
+  }
+
+  // remove dead_ends by adding loops
+  for (key = 0; key < dead_end_list.length; ++key) {
+    if (add_loops < Math.random()) {
+      continue;
+    }
+    x = dead_end_list[key][0]; y = dead_end_list[key][1];
+    while ((way = check_next(x, y, wei, width, height, true)).length != 0) {
+      //map[y][x] = '#';
+      straight = search_straight(x, y, wei);
+      switch (way.next & straight && straightness > Math.random() && straight
+              || way[Math.floor(Math.random() * way.length)]) {
+      case 1: --y; break;
+      case 2: ++x; break;
+      case 4: ++y; break;
+      case 8: --x; break;
+      }
+      map[y][x] = '#';
+      update_weight(x, y, wei, width, height);
+    }
+  }
+
+  /*
+  for (key = 0; key < dead_end_list.length; ++key) {
+    x = dead_end_list[key][0]; y = dead_end_list[key][1];
+    if (search_straight(x, y, wei)) {
+      map[y][x] = 'X';
+    }
+  }
+   */
+  return wei;
+}
+
+function check_next(x, y, wei, width, height, loop) {
+  /*
+    weight map
+
+     256    2     4
+     128    1     8
+     64     32    16
+  */
+  var next = 0; way = [];
+  if (y != 0 && (!(wei[y - 1][x] & (1 + 2 + 4 + 8 + 128 + 256))
+                 || loop && (!(wei[y - 1][x] & (1 + 8 + 128)) && wei[y - 1][x] & 2))) { // check North
+    next += 1;
+    way.push(1);
+  }
+  if (x != width - 1 && (!(wei[y][x + 1] & (1 + 2 + 4 + 8 + 16 + 32))
+                         || loop && (!(wei[y][x + 1] & (1 + 2 + 32)) && wei[y][x + 1] & 8))) { // check East
+    next += 2;
+    way.push(2);
+  }
+  if (y != height - 1 && (!(wei[y + 1][x] & (1 + 8 + 16 + 32 + 64 + 128))
+                          || loop && (!(wei[y + 1][x] & (1 + 8 + 128)) && wei[y + 1][x] & 32))) { // check South
+    next += 4;
+    way.push(4);
+  }
+  if (x != 0 && (!(wei[y][x - 1] & (1 + 2 + 32 + 64 + 128 + 256))
+                 || loop && (!(wei[y][x - 1] & (1 + 2 + 32)) && wei[y][x - 1] & 128))) { // check West
+    next += 8;
+    way.push(8);
+  }
+  way.next = next;
+  return way;
+}
+
+function search_straight(x, y, wei) {
+  /*
+    direction
+         1 
+    8    #    2
+         4
+
+    weight map
+    256    2     4
+    128    1     8
+    64     32    16
+   */
+  switch (wei[y][x]) {
+  case 1 + 2: return 4;
+  case 1 + 2 + 4 + 256: return 4;
+  case 1 + 8: return 8;
+  case 1 + 4 + 8 + 16: return 8;
+  case 1 + 32: return 1;
+  case 1 + 16 + 32 + 64: return 1;
+  case 1 + 128: return 2;
+  case 1 + 64 + 128 + 256: return 2;
+  case 1 + 2 + 4:
+    return wei[y - 1][x + 1] & 2 ? 8 : 4;
+  case 1 + 4 + 8:
+    return wei[y - 1][x + 1] & 8 ? 4 : 8;
+  case 1 + 8 + 16:
+    return wei[y + 1][x + 1] & 8 ? 1 : 8;
+  case 1 + 16 + 32:
+    return wei[y + 1][x + 1] & 32 ? 8 : 1;
+  case 1 + 32 + 64:
+    return wei[y + 1][x - 1] & 32 ? 2 : 1;
+  case 1 + 64 + 128:
+    return wei[y + 1][x - 1] & 128 ? 1 : 2;
+  case 1 + 128 + 256:
+    return wei[y - 1][x - 1] & 128 ? 4 : 2;
+  case 1 + 256 + 2:
+    return wei[y - 1][x - 1] & 2 ? 2 : 4;
+  default: return 0;
+  }
+}
+
+function update_weight(x, y, wei, width, height, erase) {
+  /*
+    around plus weight
+    +16    +32    +64
+    +8      #     +128
+    +4     +2     +256
+   */
+  var sign = erase ? -1 : 1;
+  wei[y][x] += 1 * sign; // center
+  if (y != 0) {
+    wei[y - 1][x] += 32 * sign; // N
+  }
+  if (x != width -1 && y != 0) {
+    wei[y - 1][x + 1] += 64 * sign; // NE
+  }
+  if (x != width -1) {
+    wei[y][x + 1] += 128 * sign; // E
+  }
+  if (x != width -1 && y != height - 1) {
+    wei[y + 1][x + 1] += 256 * sign; // SE
+  }
+  if (y != height - 1) {
+    wei[y + 1][x] += 2 * sign; // S
+  }
+  if (x != 0 && y != height - 1) {
+    wei[y + 1][x - 1] += 4 * sign; // SW
+  }
+  if (x != 0) {
+    wei[y][x - 1] += 8 * sign; // W
+  }
+  if (x != 0 && y != 0) {
+    wei[y - 1][x - 1] += 16 * sign; // NW
+  }
+}
+
+function map2text(map) {
+  var lines = [];
+  for (var i = 0; i < map.length; ++i) {
+    lines.push(map[i].join(''));
+  }
+  return lines.join('\n');
+}
+
+function convert() {
+  var lines = document.generator.text_map.value.split(/\r?\n/);
+  var x = 0, y = 0;
+  for (var i = 0; i < lines.length; ++i) {
+    var chars = lines[i].split("");
+    if (x < chars.length) { x = chars.length; }
+    for (var j = 0; j < chars.length; ++j) {
+      chars[j] = chars[j] == '"' ? '"\\""' :  '"' + chars[j] + '"';
+    }
+    lines[i] = '  [' + chars.join(',') + ']';
+  }
+  y = lines.length;
+
+  document.generator.form_width.value = x;
+  document.generator.form_height.value = y;
+  document.generator.array_map.value = '  [\n  ' + lines.join(',\n  ') + '\n  ]';
+}
+
+function forming() {
+  var lines = document.generator.text_map.value.split(/\r?\n/);
+  var x = parseInt(document.generator.form_width.value, 10), y = parseInt(document.generator.form_height.value, 10);
+
+  lines.length = y;
+  for (var i = 0; i < lines.length; ++i) {
+    var chars = lines[i] ? lines[i].split("") : [];
+    chars.length = x;
+    for (var j = 0; j < chars.length; ++j) {
+      chars[j] = chars[j] ? (chars[j] == '"' ? '"\\""' :  '"' + chars[j] + '"') : '';
+    }
+    lines[i] = '  [' + chars.join(',') + ']';
+  }
+
+  document.generator.array_map.value = '  [\n  ' + lines.join(',\n  ') + '\n  ]';
+}
+
+</script>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>

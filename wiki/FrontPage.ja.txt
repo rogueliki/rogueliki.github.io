@@ -1,0 +1,10 @@
+これはフロントページです。
+SandBox はこちらです。
+----
+
+インストールする方法を知りたい方は HowToInstall に飛んでください。
+使い方を知りたい方は HowToUse を参照してください。
+
+RoguelikiFeatures -- Rogueliki について詳しく知りたい方は読んでください。
+RoguelikiElements -- Rogueliki に含まれるライブラリとアプリケーションの説明があります。
+RoguelikiInstallation  -- Rogueliki のインストールの仕方を解説します。

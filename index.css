@@ -1,0 +1,33 @@
+﻿body {
+  margin-top: .5em;
+  padding-top: 0em;
+}
+
+p, li {
+  margin: .1em .5em;
+  line-height: 1.4em;
+}
+
+p#header {
+  margin-top: 0em;
+  padding-top: 0em;
+  text-align: right;
+  font-size: 80%;
+}
+
+p#footer {
+  text-align: right;
+  font-size: 80%;
+}
+
+img {
+  vertical-align: middle;
+}
+
+img.illust {
+  float: left;
+}
+
+hr {
+  clear: both;
+}

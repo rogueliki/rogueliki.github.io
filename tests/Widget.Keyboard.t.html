@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+
+<style type="text/css">
+form#Widget-Keyboard-1 { line-height:0px; margin:0px; padding:0px; }
+form#Widget-Keyboard-1 input { font-size:120%; margin:0px; padding:0px; }
+</style>
+
+<input id="hoge" type="text" size="50"/><hr />
+
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.Simple');
+JSAN.use('Widget.Keyboard');
+plan({tests: 3});
+var kbd = new Widget.Keyboard(['2.6em', 0.6]);
+ok(kbd.width == 2.6 && kbd._size == 'em', 'parse size');
+kbd.write();
+ok(document.getElementById(kbd.id) && document.getElementById(kbd.id + ' Up'), 'write keyboard to HTML');
+var type = function (key) {
+  var text = document.getElementById('hoge');
+  switch (key.value) {
+  case 'BackSpace':
+    text.value = text.value.slice(0, -1);
+  case 'Return': case 'Alt': case 'Ctrl':
+  case 'Left': case 'Down': case 'Up': case 'Right':
+    break;
+  case 'Enter': text.value = ''; break;
+  case 'Space': text.value += ' '; break;
+  case 'Tab': text.value += '	'; break;
+  default: text.value += key.value;
+  }
+};
+kbd.addTypeListener(true, type);
+ok(typeof document.getElementById(kbd.id + ' Up').onclick == 'function', 'add type listener');
+</script></pre>
+</body>
+</html>

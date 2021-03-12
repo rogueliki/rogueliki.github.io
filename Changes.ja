@@ -1,0 +1,336 @@
+﻿=== v0.2.2 20070930
+* `wield' と `unwield' の実装
+* Item.Sword の追加
+* `fight' `kick' `damaged' `die' の実装
+* `attack' `attacked' `slash' `slashed' の実装
+* 暫定的な戦闘アルゴリズムの利用
+* FoV アルゴリズムとインターフェースを変更
+* Event.selectScreen の実装
+* AI.attacker と AI.counterattacker を追加
+* 死後に表示する墓の実装
+* WikiAPI.Cookie の追加
+* rogueliki.html で player と map を入力して IN できるように
+
+----
+=== v0.2.1 20070801
+* WikiAPI.AIR.Files の追加
+* Rogueliki.AI の追加
+* rl.perform の追加
+* rl.turn で敵が動くように
+* player.other で自分かどうかを判別するように
+* map.players にも自分を追加するように
+* HTML に player のステータス表示を追加
+* 簡単な視界表示機構を追加
+* Item.Armor の追加
+* Item.Armor.TShirt の追加
+* `equip' と `wear' の実装
+* `unequip' と `takeOff' の実装
+* テストのため、幾つかのアイテムを map:FirstFloor に追加
+
+----
+== v0.2.0 20070707
+* 英語の説明をできるだけ付けるように
+* html にハッシュ機構を実装
+* デフォルトを map:FirstFloor、player:Guest に
+* Tile.Floor.Toilet の追加
+* Tile.Door.Locked の追加
+* plural に対応するための修正
+* TiddlyWiki のバージョンを 2.2 に
+* WikiRPC を WikiAPI に改名
+* WikiAPI.Creole の追加
+* WikiAPI.Rogueliki.HTML の wiki 取得の時にロケールを利用するように 
+* WikiAPI.Rogueliki.HTML の他 wiki 利用は委譲を使うように 
+* Tile.Floor や Tile.Corridor を利用するため Rogueliki.Map のデフォルトを変更
+* rl.simplify の実装
+* toLiteral を実装
+* rl.save の実装
+* Event.selectItems の実装
+* dropSeveral の実装
+* wiki.php に getObject と putObject を実装
+* WikiAPI.XMLRPC に getObject と putObject を実装
+* Tile.Floor.Staircase と Up and Down を追加
+* goUp と goDown の実装
+* rl.register の追加
+
+----
+=== v0.1.21 20070602
+* Map Generator の実装
+* Rogueliki.HTML の input は onSubmit で決定するように
+* 第一引数が false のとき、第二引数を直接 receive できる機能を rl.key に追加
+* WikiRPC.TiddlyWiki.Files の IE の UTF-8 のロードは捨て
+* Rogueliki.chrSize をロケール設定時に変更するように
+* Rogueliki.Event のイベントを小文字始まりに改名
+* Event.inputLines の実装
+* test.html を rogueliki.html にリネーム
+* Item.Clipboard の実装
+* Item.PencilCase の実装
+
+----
+=== v0.1.20 20070512
+* Rogueliki.Setup から Object.Source Array.Iterative を独立
+* Rogueliki.Setup と Rogueliki.HTML.Setup から String.Escape を独立
+* page.html と object.html を Rogueliki から分離
+* WikiRPC.TiddlyWiki.Files と WikiRPC.Rogueliki.HTML の実装を修正
+* WikiRPC.TiddlyWiki.Files の getObject putObject メソッドを実装
+
+----
+=== v0.1.19 20070508
+* page.html の実装
+* object.html の UI を page.html と同じように
+* Widget.Keyboard の追加
+* heading の記法を * から = に改定
+* Test.Simple を package に
+* COPYING の文面を修正
+
+----
+=== v0.1.18 20070423
+* object.html の実装
+* toSource 関数の実装
+* TiddlyWiki を pacakge に
+* Locale.GetText を Locale.Gettext にして挙動を修正
+* tests のファイル名を修正
+* PD の文面を転載
+
+----
+=== v0.1.17 20060723
+* ペンの追加
+* write の実装
+* JSAN の実装も考えてグローバル変数に var 付け
+
+----
+=== v0.1.16 20060717
+* スクリプトを UTF-8N に
+* wiki.php の追加
+* say のメッセージの変更
+
+----
+=== v0.1.15 20060713
+* String.prototype.format を追加
+* 言語依存部分の文字列リテラルをダブルクォートに
+* Locale.GetText の追加
+* Makefile の追加
+* デフォルトメッセージを英語に変更
+* System.locale の実装
+
+----
+=== v0.1.14 20060703
+* BSD から PD への移行
+* document.addEventHandler を追加
+* readyInput の引数に type を追加
+* Rogueliki.Item.Scroll.Wiki の追加
+* this.name も rl.eval で取得するように
+* SelectItem 時に一覧を出力するように
+* Rogueliki.roll の実装
+
+----
+=== v0.1.13 20060620
+* WikiRPC.Rogueliki の文法を改定
+* String.prototype に center ljust rjust を追加
+* 画面の横幅より長い文字列を line に表示できるように
+* Object.forEach の実装
+
+----
+=== v0.1.12 20060612
+* rl.readyInput の追加
+* Event.InputLines の実装
+* Event.SelectDir の実装
+* Map.say の実装
+* System.command の実装
+
+----
+=== v0.1.11 20060607
+* input 機構の追加
+* Opera 用に update escapeHTML を最適化
+* ライセンステキストの追加
+
+----
+=== v0.1.10 20060527
+* rl.load の user object 部分を wiki に移行
+* wiki に getObject メソッドを追加
+
+----
+=== v0.1.9 20060520
+* Event の名称を変更
+
+----
+=== v0.1.8 20060518
+* WikiRPC.Rogueliki.HTML のメソッドの実装
+* Item.look に識別フラグを追加
+
+----
+=== v0.1.7 20060514
+* monsters を players に変更
+
+----
+=== v0.1.6 20060513
+* HTML.convertPageHTML に文法を追加
+
+----
+=== v0.1.5 20060512
+* Map.toHTML が冗長だったので削除
+
+----
+=== v0.1.4 20060511
+* Map.prototype.item Map.prototype.tile の追加
+* map.player は初期位置だけで本座標は rl.player に直接
+* start 時に Default を呼ばせないことで test コマンドを不要に
+
+----
+=== v0.1.3 20060510
+* character を symbol に
+
+----
+=== v0.1.2 20060509
+* System から呼ぶ順番を map || player から player || map に
+* やっぱ command 側で例外を投げないように
+
+----
+=== v0.1.1 20060508
+* Player に read を実装
+* drop の実装
+* player.length を player.items.length に
+* listItem の変更
+
+----
+== v0.1.0 20060507
+* Subversion の利用
+
+----
+=== v0.0.29 20060505
+* lines 要素を absolute に配置
+* command 側で例外を投げるように
+
+----
+=== v0.0.28 20060504
+* 複数個のアイテムを拾う処理のバグを修正
+* Event.ItenSelect の items をハッシュにも対応
+
+----
+=== v0.0.27 20060503
+* Player の items をハッシュに
+* monsters は players かなぁと考えている
+
+----
+=== v0.0.26 20060430
+* テーブル記法に対応
+* help にキーマップ表示機能を
+
+----
+=== v0.0.25 20060428
+* IE6 もおかしかったので IE6 のカーソルだけ keydown に
+  そもそも記号を取得するために keypress にしたことを思い出す
+
+----
+=== v0.0.24 20060428
+* NS 系がおかしかったので HTML のキーイベントを IE6 だけ keydown に
+
+----
+=== v0.0.23 20060425
+* HTML のキーイベントを Opera 以外は keydown に
+
+----
+=== v0.0.22 20060424
+* Wiki を Rogueliki から WikiRPC に
+
+----
+=== v0.0.21 20060423
+* lines の表示機構を Wiki に
+
+----
+=== v0.0.20 20060409
+* eval の引数の順番を変更
+
+----
+=== v0.0.19 20060407
+* 主に lines が駄目になる HTML エスケープのバグを修正
+* update のインターフェースを少し変更
+
+----
+=== v0.0.18 20060403
+* カーソルキーでも移動できるように
+* direction を KeyMap のプロトタイプに移動
+
+----
+=== v0.0.17 20060401
+* Map の大きさやプレイヤー座標をオブジェクトに
+* update を room vision モドキに
+* Tile.Door.Broken を追加
+
+----
+=== v0.0.16 20060328
+* 廊下からは壁が視認できないように
+* keyMap をプロトタイプ編成に
+* defineType の引数からコンストラクタを削除
+* init プロパティをコンストラクタの代替に
+
+----
+=== v0.0.15 20060327
+* Object.extend でプロパティが DontEnum になって extend できないバグを修正
+
+----
+=== v0.0.14 20060321
+* System.HTML の追加
+* キーデフォルト挙動の ON / OFF を変更するコマンド
+
+----
+=== v0.0.13 20060308
+* Player が所持品の数をわかるように
+
+----
+=== v0.0.12 20060308
+* line lines screen の DOM 要素を別に
+
+----
+=== v0.0.11 20060307
+* command と eval の 引数の順番を逆に
+* order を引数に含めることでプロパティから削除
+
+----
+=== v0.0.10 20060306
+* 複数行を返すことで別スクリーンに文字列を表示するように
+
+----
+=== v0.0.9 20060304
+* 配列が queue にあったら展開するように
+* 配列リテラルはスペースを空けて書くように
+* execute を eval に改名
+
+----
+=== v0.0.8 20060227
+* アイテムを拾う処理を追加
+* プレイヤーに下線表示できるように
+* update は map.screen の更新に callback の返値を使うように
+
+----
+=== v0.0.7 20060224
+* true を receive したら ready() が呼ばれるように
+* Event.Command → Event.Default
+
+----
+=== v0.0.6 20060214
+* more 機構を Event と切り離し
+
+----
+=== v0.0.5 20060131
+* より自然な参照のため this と第一引数の順番を逆に
+
+----
+=== v0.0.4 20060115
+* ダンジョンにプレイヤー記憶情報を追加
+* 合わせて視界処理の追加
+
+----
+=== v0.0.3 20051229
+* Tile.Door の実装
+
+----
+=== v0.0.2 20051020
+* 歩いた
+
+----
+=== v0.0.1 20050929
+* 作り始め
+
+----
+= v0.0.0 20050401
+* 考え始め

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>Load Test</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+  <script type="text/javascript" src="lib/gears_init.js"></script>
+  <script type="text/javascript" src="lib/JSAN.js"></script>
+  <script type="text/javascript" src="lib/Locale.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki.js"></script>
+  <script type="text/javascript" src="lib/Array/Iterative.js"></script>
+  <script type="text/javascript" src="lib/Locale/Gettext.js"></script>
+  <script type="text/javascript" src="lib/Object/Source.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Base.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Event.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/HTML.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/KeyMap.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Map.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Player.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Setup.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/System.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/HTML/Setup.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/Book.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/Clipboard.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/Pen.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/PencilCase.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/Scroll.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Item/Scroll/Wiki.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/KeyMap/HTML.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Map/PrivateRoom.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/System/HTML.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Corridor.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Door.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Floor.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Wall.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Door/Broken.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Door/Locked.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Floor/Staircase.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Floor/Toilet.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Floor/Staircase/Down.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Floor/Staircase/Up.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Wall/X.js"></script>
+  <script type="text/javascript" src="lib/Rogueliki/Tile/Wall/Y.js"></script>
+  <script type="text/javascript" src="lib/String/Escape.js"></script>
+  <script type="text/javascript" src="lib/Widget/Keyboard.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/Creole.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/GoogleGears.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/PukiWiki.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/XMLRPC.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/Rogueliki/HTML.js"></script>
+  <script type="text/javascript" src="lib/WikiAPI/TiddlyWiki/Files.js"></script>
+  <script type="text/javascript" src="lib/XMLRPC/Minimal.js"></script>
+</head>
+
+<body>
+
+<form id="fm" name="fm">
+  <textarea name="ta" id="ta" cols="80" rows="20"></textarea>
+  <input name="cb" id="cb" type="checkbox" checked="checked" />
+  <label for="cb">alert</label>
+  <input type="button" onclick="document.fm.cb.checked ? alert(eval(document.fm.ta.value)) : eval(document.fm.ta.value)" value="eval" />
+</form>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>

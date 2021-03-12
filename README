@@ -1,0 +1,34 @@
+= Rogueliki - A Roguelike Wiki =
+
+This is a pre-alpha release. You can check in the following way.
+
+== For web use ==
+  # upload lib, locale, wiki and rogueliki.html (and wiki.php for save)
+  # access rogueliki.html (or rogueliki.html#XMLRPC)
+
+== For local use ==
+  # access rogueliki.html (or rogueliki.html#TiddlyWiki.Files)
+
+----
+== Hash Access ==
+
+(files:///|http://)(path_to_rogueliki)/rogueliki.html#(API)/(MAP)/(PLAYER)/
+
+API
+  * "XMLRPC" - using WikiAPI.XMLRPC (required wiki.php, for web)
+  * "TiddlyWiki.Files" - using WikiAPI.TiddlyWiki.Files (required TiddlyWiki.htm, for local)
+  * default - read only using XMLHttpRequest
+
+MAP / PLAYER
+  * foo -> wiki/foo.js
+  * foo:baa -> wiki/foo/baa.js
+  * ^Rogueliki.*** -> JSAN.use('Rogueliki.***') and new Rogueliki.***
+
+example
+  * rogueliki.html#TiddlyWiki.Files/map:test/player:test/
+
+----
+== HELP ==
+
+I start trying to write english description from version 0.2.0, but I am nonnative (you know).
+I thank you for pointing out my writing, if you allow I dedicate it to the public domain (detail: COPYNG).

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+</head>
+
+<body>
+<pre id="test"><script type="text/javascript">
+JSAN.addRepository('../lib').use('Test.More');
+
+plan({tests: 11});
+
+var Func1 = function () { this.ppp = 17; this.ppp2 = 27 }, Func2 = function () { this.ppp = 34; };
+
+(function () {
+  var obj = new Func1;
+  cmpOK(obj, 'instanceof', Func1, 'new 演算子と incetanceof は有効か');
+  is(obj.ppp, 17, 'コンストラクタの中でプロパティを定義できるかどうか');
+})();
+
+Func2.prototype = new Func1;
+
+(function () {
+  var obj = new Func2;
+  is(obj.ppp2, 27, 'プロトタイプチェインが繋がるか');
+  is(obj.ppp, 34, 'チェインの優先順位');
+
+  delete obj.ppp;
+  is(obj.ppp, 17, 'delete 演算子の挙動・チェインを上に辿れるか');
+
+  Func2.prototype.qqq = 15;
+  is(obj.qqq, 15, 'チェインの後でもプロトタイプを弄れるか');
+
+  Func2.prototype = { ppp: 10 };
+  isnt(obj.ppp, 10, 'prototype と __proto__ は別か');
+})();
+
+if (!Object.extend) {
+  Object.extend = function (obj, add) {
+    for (var i in add) {
+      obj[i] = add[i];
+    }
+    return obj;
+  };
+}
+
+(function () {
+  var obj = { aaa: 99, ccc: 3 }, obj2 = { aaa: 1, bbb: 2};
+  Object.extend(obj, obj2);
+  ok(obj.aaa == 1 && obj.bbb == 2 && obj.ccc == 3, 'この後で使う Object.extend のテスト');
+})();
+
+Func1.prototype = {
+  aaa: function () { return this.ppp + 'aaa'; },
+  bbb: function () { return this.ppp + 'bbb'; }
+};
+
+Func2.prototype = new Func1;
+Object.extend(Func2.prototype, function (parent) { return {
+  aaa: function () { return parent.aaa.call(this) + this.ppp + 'aaa2'; }
+} }(Func1.prototype));
+
+(function () {
+  var obj = new Func2;
+  obj.ppp = 'hoge ';
+  is(obj.bbb(), 'hoge bbb', 'プロトタイプメソッドの呼び出し');
+  is(obj.aaa(), 'hoge aaahoge aaa2', 'クロージャを使った super メソッドの呼び出し');
+})();
+
+var Func3 = function () { };
+Func3.prototype = new Func2;
+Object.extend(Func3.prototype, function (parent) { return {
+  aaa: function () { return parent.aaa.call(this) + this.ppp + 'aaa3'; }
+} }(Func2.prototype));
+
+(function () {
+  var obj = new Func3;
+  obj.ppp = 'foo ';
+  is(obj.aaa(), 'foo aaafoo aaa2foo aaa3', '更にクロージャを使った super メソッドの呼び出し');
+})();
+
+</script></pre>
+</body>
+</html>

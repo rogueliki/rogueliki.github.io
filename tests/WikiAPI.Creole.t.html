@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="../lib/JSAN.js"></script>
+  <script type="text/javascript" src="../lib/WikiAPI/Creole.js"></script>
+</head>
+
+<body>
+
+<form id="fm" name="fm">
+  <textarea name="ta1" id="ta" cols="40" rows="30">
+ボールドとイタリックは //ラインを
+またぐ// ことができます。
+
+しかし、 //パラグラフを...
+
+...またぐ// ことはできません。
+
+ **//ボールドイタリック//**
+//**ボールドイタリック**//
+//こうする **ことも** できます。//
+
+[[link]]
+[[MyBigPage|**Go** //to my// page]]
+[[http://www.wikicreole.org/]]
+http://www.rawlink.org/, http://www.another.rawlink.org
+[[http://www.wikicreole.org/|Visit the WikiCreole website]]
+[[Weird Stuff|**Weird** //Stuff//]]
+[[Ohana:WikiFamily]]
+
+#test\\test
+## list
+    ### list
+ ## tst
+# はろ
+
+
+{{{
+//これ// は **整形** され [[ません]] 
+}}}
+
+{{myimage.png|this is my image}}
+
+[[aho|{{myimage.png|this is my image}}]]
+
+|むにむに|
+
+=ひどい
+==asda
+==head==
+#swerser
+#rser
+
+*~TesttTtset
+#rserser
+
+===asdad
+#sghdf
+|ぼぼt|t<>est|
+|RsEr|[[resr]]
+|[[|]]|
+|tsだｓｄt|tset|
+
+つぇつ[[ぇｔ]]|tsetse|tset
+びう
+|ぜーんsets|tset|
+
+</textarea>
+  <textarea name="ta2" id="ta" cols="80" rows="30">
+  </textarea>
+  <input type="button" onclick="document.fm.ta2.value = wiki.convertPageHTML(document.fm.ta1.value)" value="eval" />
+</form>
+<script type="text/javascript">var wiki = new WikiAPI.Creole();</script></pre>
+
+</body>
+</html>

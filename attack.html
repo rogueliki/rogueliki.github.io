@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>Attack Test</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+  <style type="text/css">
+th { text-align: right; }
+  </style>
+</head>
+
+<body>
+<script type="text/javascript">
+var a = { name: 'you' }, b = { 'name': 'zombie' }, silent;
+
+function roll(times, sides, option) {
+  sides = sides || 6;
+  var cast, result = 0;
+  for (var i = 0; i < times; ++i) {
+    cast = Math.floor(Math.random() * sides) + 1;
+    result += option && typeof option[cast] == 'number'
+      ? option[cast]
+      : cast;
+  }
+  return result;
+}
+
+function load() {
+  a.strength = parseInt(document.getElementById('str1').value, 10);
+  a.dexterity = parseInt(document.getElementById('dex1').value, 10);
+  a.constitution = parseInt(document.getElementById('con1').value, 10);
+  a.intelligence = parseInt(document.getElementById('int1').value, 10);
+  a.wisdom = parseInt(document.getElementById('wis1').value, 10);
+  a.charisma = parseInt(document.getElementById('cha1').value, 10);
+
+  a.hitPoints = parseInt(document.getElementById('hp1').value, 10);
+  a.magicPoints = parseInt(document.getElementById('mp1').value, 10);
+  a.armorClass = parseInt(document.getElementById('ac1').value, 10);
+
+  b.strength = parseInt(document.getElementById('str2').value, 10);
+  b.dexterity = parseInt(document.getElementById('dex2').value, 10);
+  b.constitution = parseInt(document.getElementById('con2').value, 10);
+  b.intelligence = parseInt(document.getElementById('int2').value, 10);
+  b.wisdom = parseInt(document.getElementById('wis2').value, 10);
+  b.charisma = parseInt(document.getElementById('cha2').value, 10);
+
+  b.hitPoints = parseInt(document.getElementById('hp2').value, 10);
+  b.magicPoints = parseInt(document.getElementById('mp2').value, 10);
+  b.armorClass = parseInt(document.getElementById('ac2').value, 10);
+}
+
+function store() {
+  document.getElementById('hp1').value = a.hitPoints;
+  document.getElementById('hp2').value = b.hitPoints;
+}
+
+function reset() {
+  document.getElementById('hp1').value = document.getElementById('hp2').value = 10;
+}
+
+function attack(attacker, defender, eval_attack, eval_damage) {
+  load();
+  var item, damage, string = attacker.name + '(' + attacker.hitPoints + ')'
+    + (attacker.name == 'you' ? ' attack ' : ' attacks ')
+    + defender.name + '(' + defender.hitPoints + ')';
+
+  if (eval(eval_attack || document.getElementById('attack').value)) {
+    item = roll(1, 6);
+    damage = eval(eval_damage || document.getElementById('damage').value);
+    defender.hitPoints -= damage;
+    if (!silent) {
+      document.getElementById('lines').innerHTML = string + ': damage: ' + damage + '<br />' + document.getElementById('lines').innerHTML;
+    }
+  } else {
+    if (!silent) {
+      document.getElementById('lines').innerHTML = string + ': miss<br />' + document.getElementById('lines').innerHTML;
+    }
+  }
+  store();
+}
+
+function battle(loaded, eval_attack, eval_damage) {
+  reset();
+  if (!loaded) {
+    load();
+  }
+  eval_attack = eval_attack || document.getElementById('attack').value;
+  eval_damage = eval_damage || document.getElementById('damage').value;
+  var turn = 0, win;
+  while (turn < 100) {
+    ++turn;
+    attack(a, b, eval_attack, eval_damage);
+    if (b.hitPoints < 0) {
+      win = 1;
+      break;
+    }
+    attack(b, a, eval_attack, eval_damage);
+    if (a.hitPoints < 0) {
+      win = 0;
+      break;
+    }
+  }
+  if (!silent) {
+    document.getElementById('lines').innerHTML = '----<br />end battle: ' + (win ? 'you' : 'zombie') + ' win! '
+      + turn + ' turns<br />' + document.getElementById('lines').innerHTML;
+  }
+  return [turn, win];
+}
+
+function battles(count, eval_attack, eval_damage) {
+  count = count || 100;
+  eval_attack = eval_attack || document.getElementById('attack').value;
+  eval_damage = eval_damage || document.getElementById('damage').value;
+  var result, before = silent, turn = 0, winner = 0;
+  silent = true;
+  load();
+  for (var i = 0; i < count; ++i) {
+    reset();
+    result = battle(true)
+    turn += result[0];
+    winner += result[1];
+  }
+  silent = before;
+  if (!silent) {
+    document.getElementById('lines').innerHTML = '----<br />end ' + count + ' battles: you ' + winner + ' / '
+      + (count - winner) + ' zombie  avg. ' + turn / count + ' turn<br />' + document.getElementById('lines').innerHTML;
+  }
+  reset();
+  return turn / count;
+}
+</script>
+
+<div>
+<p id="line">
+<a href="javascript:attack(a,b);attack(b,a);void(0)">attack</a>
+<a href="javascript:reset();void(0)">reset</a>
+<a href="javascript:battle();void(0)">battle</a>
+<a href="javascript:battles();void(0)">100 battles</a>
+<a href="javascript:battles(1000);void(0)">1000 battles</a>
+</p>
+<p id="lines"></p>
+<p id="screen">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|....|<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|.@Z.|<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|....|<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------<br />
+</p>
+</div>
+
+<p>
+var item, damage;<br />
+// melee attack<br />
+if (<input id="attack" size="80" value="defender.armorClass + Math.floor(defender.dexterity / 2) - 5 < roll(1, 20, {1: -10, 20: 30}) + Math.floor(attacker.strength / 2) - 5" />) {<br />
+&nbsp;&nbsp;item = roll(1, 6); // long sword<br />
+&nbsp;&nbsp;damage = <input id="damage" size="80" value="Math.max(item + Math.floor(attacker.strength / 2) - 5, 0)" />;<br />
+&nbsp;&nbsp;defender.hitPoints -= damage;<br />
+&nbsp;&nbsp;print('damage: ' + damage)<br />
+} else {<br />
+&nbsp;&nbsp;print('miss')<br />
+}
+</p>
+
+<table>
+<tr><th></th><th>@</th><th>Z</th></tr>
+<tr><th>strength</th><td><input id="str1" size="2" value="10"></td><td><input id="str2" size="2" value="10"></td></tr>
+<tr><th>dexterity</th><td><input id="dex1" size="2" value="10"></td><td><input id="dex2" size="2" value="10"></td></tr>
+<tr><th>constitution</th><td><input id="con1" size="2" value="10"></td><td><input id="con2" size="2" value="10"></td></tr>
+<tr><th>intelligence</th><td><input id="int1" size="2" value="10"></td><td><input id="int2" size="2" value="10"></td></tr>
+<tr><th>wisdom</th><td><input id="wis1" size="2" value="10"></td><td><input id="wis2" size="2" value="10"></td></tr>
+<tr><th>charisma</th><td><input id="cha1" size="2" value="10"></td><td><input id="cha2" size="2" value="10"></td></tr>
+<tr><th>armorClass</th><td><input id="ac1" size="2" value="10"></td><td><input id="ac2" size="2" value="10"></td></tr>
+<tr><th>hitPoints</th><td><input id="hp1" size="2" value="10"></td><td><input id="hp2" size="2" value="10"></td></tr>
+<tr><th>magicPoints</th><td><input id="mp1" size="2" value="10"></td><td><input id="mp2" size="2" value="10"></td></tr>
+</table>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>

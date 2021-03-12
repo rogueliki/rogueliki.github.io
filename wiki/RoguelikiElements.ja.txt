@@ -1,0 +1,227 @@
+﻿Rogueliki は幾つかの構成要素から成り立っていて、
+それぞれ Rogueliki に密接に関係しているものもあれば、そうでないものもあり、
+Rogueliki 以外の用途で個別に用いることは自由です。
+
+----
+== Array.Iterative
+Array や Array.prototype、そして Object に forEach や map などの関数を追加するライブラリです。
+
+=== Files
+* lib/Array/Iterative.js
+
+----
+== String.Escape
+String や String.prototype に escape や escapeHTML などの関数を追加するライブラリです。
+
+=== Files
+* lib/String/Escape.js
+
+----
+== JSAN
+JSAN はライブラリ間の依存関係を解決するために Rogueliki で用いられている、パッケージ管理ライブラリです。
+事前に script 要素でスクリプトをロードしておかなくとも、
+必要なライブラリを動的にロードできるようになります。
+逆に、script 要素で依存関係を解決しておくことで、JSAN を使わなくても動作するライブラリもあります
+（Requires の JSAN の表記が (JSAN)  になっています）。
+
+著作者・ライセンスは COPYING を参照してください。
+
+=== Files
+* lib/JSAN.js
+
+----
+== XMLRPC.Minimal
+XMLHttpRequest を利用して動作する、簡素な XML-RPC クライアントです。
+
+=== Files
+* lib/XMLRPC/Minimal.js
+
+----
+== Locale
+setlocale 関数に似た Locale.setlocale 関数を提供します。
+
+=== Files
+* lib/Locale.js
+
+----
+== Locale.Gettext
+gettext ユーティリティで使われる PO ファイルを直接読み込み、
+bindtextdomain や gettext、 ngettext 関数を使えるようにします。
+
+=== Files
+* lib/Locale/Gettext.js
+
+=== Requires
+* Locale
+* (JSAN)
+
+----
+== Widget.Keyboard
+HTML でソフトキーボードを実行します。
+
+=== Files
+* lib/Widget/Keyboard.js
+
+----
+== Object.Source
+オブジェクトのリテラル表記を返す関数を提供します。
+
+=== Files
+* lib/Object/Source.js
+
+=== Requires
+* Array.Iterative
+* String.Escape
+* JSAN
+
+----
+== WikiAPI.XMLRPC
+Wiki XMLRPC API を利用して wiki にアクセスします。
+
+=== Files
+* lib/WikiAPI/XMLRPC.js
+
+=== Requires
+* XMLRPC.Minimal
+* (JSAN)
+
+----
+== WikiAPI.PukiWiki
+XMLHttpRequest を利用して PukiWiki にアクセスします。
+
+=== Files
+* lib/WikiAPI/PukiWiki.js
+
+----
+==WikiAPI.GoogleGears
+GoogleGears の DB を wiki に利用します。
+
+=== Files
+* lib/WikiAPI/GoogleGears.js
+
+----
+== TiddlyWiki
+ローカルで動作する wiki です。
+
+著作者・ライセンスは COPYING を参照してください。
+
+=== Files
+* TiddlyWiki.htm
+
+----
+== WikiAPI.TiddlyWiki.Files
+TiddlyWiki のセーブ/ロード関数を wiki に利用します。
+
+=== Files
+* lib/WikiAPI/TiddlyWiki/Files.js
+
+=== Requires
+* TiddlyWiki
+* Array.Iterative
+* Object.Source
+* String.Escape
+* JSAN
+
+----
+== WikiAPI.Rogueliki.HTML
+言語別の読み込み、getObject putObject のインターフェースなどを
+wiki の委譲なども利用して提供します。
+
+=== Files
+* lib/WikiAPI/Rogueliki/HTML.js
+
+=== Requires
+* Array.Iterative
+* Locale
+* String.Escape
+* JSAN
+
+----
+== Rogueliki
+Rogueliki は WikiAPI を利用して roguelike な UI で wiki を編集できるようにするためのライブラリです。
+
+=== Files
+* lib/Rogueliki.js
+* lib/Rogueliki/Base.js
+* lib/Rogueliki/Event.js
+* lib/Rogueliki/Item.js
+* lib/Rogueliki/KeyMap.js
+* lib/Rogueliki/Map.js
+* lib/Rogueliki/Player.js
+* lib/Rogueliki/Setup.js
+* lib/Rogueliki/System.js
+* lib/Rogueliki/Tile.js
+* lib/Rogueliki/Item/Book.js
+* lib/Rogueliki/Item/Clipboard.js
+* lib/Rogueliki/Item/Pen.js
+* lib/Rogueliki/Item/PencilCase.js
+* lib/Rogueliki/Item/Scroll.js
+* lib/Rogueliki/Item/Scroll/Wiki.js
+* lib/Rogueliki/Tile/Corridor.js
+* lib/Rogueliki/Tile/Door.js
+* lib/Rogueliki/Tile/Floor.js
+* lib/Rogueliki/Tile/Wall.js
+* lib/Rogueliki/Tile/Door/Broken.js
+* lib/Rogueliki/Tile/Door/Locked.js
+* lib/Rogueliki/Tile/Floor/Toilet.js
+* lib/Rogueliki/Tile/Wall/X.js
+* lib/Rogueliki/Tile/Wall/Y.js
+
+=== Requires
+* Object.Source
+* Array.Iterative
+* WikiAPI(.Rogueliki.HTML)
+* JSAN
+
+----
+== Rogueliki.HTML
+Rogueliki をブラウザで利用するために必要です。
+
+=== Files
+* lib/Rogueliki/HTML.js
+* lib/Rogueliki/HTML/Setup.js
+* lib/Rogueliki/KeyMap/HTML.js
+* lib/Rogueliki/System/HTML.js
+
+=== Requires
+* Locale
+* Locale.Gettext
+* WikiAPI.Rogueliki.HTML
+* Rogueliki
+* JSAN
+
+----
+== rogueliki.html
+Rogueliki.HTML を使ってブラウザで Rogueliki を実行します。
+
+=== Files
+* Rogueliki.HTML
+* Object.Source
+* String.Escape
+* WikiAPI.Rogueliki.HTML
+* JSAN
+
+----
+== object.html
+WikiAPI.Rogueliki.HTML を使ってブラウザで object を編集できる wiki を実現します。
+
+=== Files
+* WikiAPI.Rogueliki.HTML
+* Object.Source
+* String.Escape
+* JSAN
+
+----
+== page.html
+WikiAPI.Rogueliki.HTML を使ってブラウザで page を編集できる wiki を実現します。
+
+=== Files
+* WikiAPI.Rogueliki.HTML
+* JSAN
+
+----
+== Map Genarator
+Rogueliki.Map で使えるマップをランダムに作り出します。
+
+=== Files
+* map_generator.html

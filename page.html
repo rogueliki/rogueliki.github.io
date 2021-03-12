@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <title>page.html - (Untitled)</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+  <script type="text/javascript" src="hash.js"></script>
+  <script type="text/javascript" src="lib/JSAN.js"></script>
+  <style type="text/css"> div#body { margin: .4em; } </style>
+</head>
+
+<body>
+<div id="error"></div>
+
+<form id="menu" name="menu" onsubmit="wiki_open(this.page_id.value);return false" method="get" action="#">
+  <input id="page_id" name="page_id" type="text" size="20" value="(Untitled)"
+    onclick="if (this.value == '(Untitled)') { this.value = ''; } this.onclick = Function()" />
+  <input id="open" name="open" type="button" value="Open"
+    onclick="wiki_open(this.parentNode.page_id.value)" />
+  <input id="reload" name="reload" type="button" value="Reload" onclick="wiki_reload()" />
+  <input id="save" name="save" type="button" value="Save" onclick="wiki_save()" />
+  <input id="permalink" name="permalink" type="button" value="Wiki 2 Permalink" onclick="page2hash()" />
+  <!-- <input id="load_link" name="load_link" type="button" value="Permalink 2 Wiki" onclick="hash2page()" /> -->
+</form>
+
+<hr />
+
+<div id="pages"></div>
+<div id="body">
+<noscript>
+  <p>This page requires a JavaScript-enabled browser.</p>
+</noscript>
+</div>
+<hr />
+
+<form id="edit_form" name="edit_form" method="get" action="#">
+  <input id="edit" name="edit" type="button" onclick="new_edit()" value="New Edit (Untitled)" />
+  <input id="clear" name="clear" type="button" onclick="form_clear()" value="Clear" />
+  <input id="set" name="put" type="button" onclick="put_content()"
+    value="Put to (Untitled)" disabled="disabled" /> <br />
+  <textarea name="content" id="content" cols="80" rows="15"
+    onchange="content_changed()" onkeypress="content_changed()"></textarea>
+</form>
+
+
+<script type="text/javascript">
+var page = 'Sample Content', page_id = '', page_history = '', wiki;
+try {
+  JSAN.includePath = ['lib'];
+  JSAN.errorLevel = 'die';
+  JSAN.use('Array.Iterative'); // for (Array, Object).map
+  JSAN.use('String.Escape'); // String.escape
+  JSAN.use('WikiAPI.Rogueliki.HTML');
+  wiki = new WikiAPI.Rogueliki.HTML('./wiki/');
+  wiki.setlocale(Locale.LC_MESSAGES, 'en'); // set WikiAPI.Rogueliki.HTML locale
+} catch (e) {
+  error('Load Error:\n' + (e.description || e).toString());
+}
+
+function hash2page() {
+  var rpc_and_name = hash2wiki(page_id);
+  if (rpc_and_name[0]) {
+    wiki.wikis.unshift(rpc_and_name[0]);
+  }
+  if (rpc_and_name[1]) {
+    wiki_open(rpc_and_name[1]);
+  }
+}
+
+function page2hash() {
+  wiki2hash(page_id);
+}
+
+function error(str) {
+  var ele = document.getElementById("error");
+  ele.style.display = 'block';
+  ele.innerHTML = '<p>' + str.replace(/\n/g, '<br />') + '</p><p>'
+    + '<a href="javascript:document.getElementById(\'error\').style.display=\'none\';void(0);">'
+    + 'Close Error Message</a></p><hr />';
+}
+
+function draw() {
+  document.edit_form.edit.disabled = '';
+  document.getElementById('body').innerHTML = wiki.convertPageHTML(page, function (name) {
+    return 'javascript:wiki_open(\'' + name.escape('\'') + '\')';
+  });
+  update_form(page_id || '(Untitled)');
+}
+
+function wiki_open(id) {
+  page_id = id || window.prompt('Enter a Page ID.');
+  if (!page_id) { return; }
+  try {
+    page = wiki.getPage(page_id);
+  } catch (e) {
+    return error('Cannot Open "' + page_id + '":\n' + e);
+  }
+
+  document.getElementById('pages').innerHTML = wiki.convertPageHTML(page_history = '[[' + page_id + ']] '
+    + page_history.replace(new RegExp('\\[\\[' + page_id + '\\]\\] ', 'g'), ''), function (name) {
+    return 'javascript:wiki_open(\'' + name.escape('\'') + '\')';
+  });
+
+  document.menu.page_id.value = page_id;
+  document.title = 'page.html - ' + page_id;
+  draw();
+}
+
+function wiki_reload() {
+  if (!page_id) { return; }
+  try {
+    page = wiki.getPage(page_id);
+  } catch (e) {
+    return error('Cannot Get Page "' + page_id + '":\n' + e);
+  }
+  draw();
+}
+
+function wiki_save() {
+  try {
+    alert(wiki.putPage(page_id, page) ? 'Save is done' : 'Save failed');
+  } catch (e) {
+    return error('Cannot Put Page"' + page_id + '":\n' + e);
+  }
+}
+
+function new_edit(content) {
+  document.edit_form.content.value = content || page;
+  document.edit_form.edit.disabled = 'disabled';
+  document.edit_form.put.disabled = 'disabled';
+}
+
+function update_form(id) {
+  document.edit_form.edit.value = 'New Edit ' + id;
+  document.edit_form.set.value = 'Put to ' + id;
+}
+
+function content_changed() {
+  document.edit_form.put.disabled = '';
+  document.edit_form.edit.disabled = '';
+}
+
+function form_clear() {
+  document.edit_form.content.value = '';
+  content_changed();
+}
+
+function put_content() {
+  page = document.edit_form.content.value;
+  draw();
+}
+
+</script>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+<script type="text/javascript">
+hash2page()
+draw();
+new_edit(page);
+</script>
+</body>
+
+</html>

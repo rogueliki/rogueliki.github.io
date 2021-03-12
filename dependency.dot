@@ -1,0 +1,96 @@
+digraph Rogueliki {
+  graph [color= "#333333",  fontname="Arial", fontsize=10,
+         compound = true, concentrate = false, rankdir = LR];
+  node [color="#333333", fontname="ArialBD", fontsize=10, shape = "box"];
+
+  "Locale.Gettext" -> "Locale";
+  "Locale.Gettext" -> "JSAN" [style = dashed];
+
+  "Object.Source" -> "Array.Iterative";
+  "Object.Source" -> "String.Escape";
+  "Object.Source" -> "JSAN";
+
+  "WikiAPI.XMLRPC" -> "XMLRPC.Minimal";
+  "WikiAPI.XMLRPC" -> "JSAN" [style = dashed];
+
+  "TiddlyWiki" [shape = "ellipse"];
+  "WikiAPI.TiddlyWiki.Files" -> "TiddlyWiki";
+  "WikiAPI.TiddlyWiki.Files" -> "Array.Iterative";
+  "WikiAPI.TiddlyWiki.Files" -> "Object.Source";
+  "WikiAPI.TiddlyWiki.Files" -> "String.Escape";
+  "WikiAPI.TiddlyWiki.Files" -> "JSAN";
+  
+  "WikiAPI.Rogueliki.HTML" -> "Array.Iterative";
+  "WikiAPI.Rogueliki.HTML" -> "Locale";
+  "WikiAPI.Rogueliki.HTML" -> "String.Escape";
+  "WikiAPI.Rogueliki.HTML" -> "JSAN";
+
+  subgraph "cluster WikiAPI" {
+    label = "WikiAPI";
+    "WikiAPI.Rogueliki.HTML" -> "WikiAPI.PukiWIki" [style = dotted];
+    "WikiAPI.Rogueliki.HTML" -> "WikiAPI.GoogleGears" [style = dotted];
+    "WikiAPI.Rogueliki.HTML" -> "WikiAPI.AIR.Files" [style = dotted];
+    "WikiAPI.Rogueliki.HTML" -> "WikiAPI.XMLRPC" [style = dotted];
+    "WikiAPI.Rogueliki.HTML" -> "WikiAPI.TiddlyWiki.Files" [style = dotted];
+  }
+
+  "WikiAPI.XMLRPC" -> "Object.Source";
+  "WikiAPI.XMLRPC" -> "wiki.php";
+
+  "Rogueliki.Setup" -> "Array.Iterative";
+  "Rogueliki.Setup" -> "Object.Source";
+  "Rogueliki" -> "JSAN" [ltail="cluster Rogueliki"];
+  "Rogueliki" -> "WikiAPI.Rogueliki.HTML" [lhead="cluster WikiAPI"];
+
+  "Rogueliki.HTML.Setup" -> "Locale.Gettext";
+  "Rogueliki.HTML.Setup" -> "String.Escape";
+  subgraph "cluster Rogueliki.HTML" {
+    label = "Rogueliki.HTML";
+    
+    "Rogueliki.HTML" -> "Rogueliki.HTML.Setup";
+
+    subgraph "cluster Rogueliki" {
+      label = "Rogueliki";
+      "Rogueliki" -> "Rogueliki.Setup";
+      "Rogueliki.Base" -> "Rogueliki";
+      "Rogueliki" -> "Rogueliki.Event";
+      "Rogueliki" -> "Rogueliki.KeyMap";
+      "Rogueliki" -> "Rogueliki.Map";
+      "Rogueliki" -> "Rogueliki.Player";
+      "Rogueliki" -> "Rogueliki.System";
+      "Rogueliki" -> "Rogueliki.Item";
+      "Rogueliki" -> "Rogueliki.Tile";
+      
+      "Rogueliki.Map" -> "Rogueliki.Base";
+      "Rogueliki.Tile" -> "Rogueliki.Base";
+      "Rogueliki.Player" -> "Rogueliki.Base";
+      "Rogueliki.Item" -> "Rogueliki.Base";
+      "Rogueliki.System" -> "Rogueliki.Base";
+    }
+  }
+  "Rogueliki.HTML" -> "Rogueliki";
+  "Rogueliki.HTML" -> "WikiAPI.Rogueliki.HTML";
+  "Rogueliki.HTML" -> "JSAN" [ltail="cluster Rogueliki.HTML"];
+
+  "page.html" [shape = "ellipse"];
+  "page.html" -> "WikiAPI.Rogueliki.HTML";
+  "page.html" -> "Array.Iterative";
+  "page.html" -> "String.Escape";
+  "page.html" -> "JSAN";
+
+  "object.html" [shape = "ellipse"];
+  "object.html" -> "WikiAPI.Rogueliki.HTML";
+  "object.html" -> "Array.Iterative";
+  "object.html" -> "Object.Source";
+  "object.html" -> "String.Escape";
+  "object.html" -> "JSAN";
+
+  "rogueliki.html" [shape = "ellipse"];
+  "rogueliki.html" -> "WikiAPI.Rogueliki.HTML";
+  "rogueliki.html" -> "Rogueliki.HTML";
+  "rogueliki.html" -> "Object.Source";
+  "rogueliki.html" -> "String.Escape";
+  "rogueliki.html" -> "JSAN";
+
+  {rank = same; "page.html"; "object.html"; "rogueliki.html"}
+}

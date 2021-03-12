@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+  <script type="text/javascript" src="lib/JSAN.js"></script>
+  <title>eval</title>
+  <link rel="stylesheet" href="default.css" type="text/css" media="screen, print" />
+</head>
+
+<body>
+
+<form id="fm" name="fm">
+  <textarea name="ta" id="ta" cols="80" rows="20"></textarea>
+  <input name="cb" id="cb" type="checkbox" checked="checked" />
+  <label for="cb">alert</label>
+  <input type="button" onclick="document.fm.cb.checked ? alert(eval(document.fm.ta.value)) : eval(document.fm.ta.value)" value="eval" />
+</form>
+
+<hr />
+<p><a href="./">Rogueliki</a></p>
+
+</body>
+
+</html>
